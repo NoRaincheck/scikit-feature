@@ -66,5 +66,7 @@ def fisher_score(X, y, mode="rank"):
 
     if mode == "index":
         return F
+    elif mode == "scores":
+        return score
     else:
         return reverse_argsort(F, X.shape[1])
