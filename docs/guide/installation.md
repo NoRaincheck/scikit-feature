@@ -35,7 +35,7 @@ uv pip install -e .
 
 ## Dependencies
 
-- Python >= 3.9
+- Python >= 3.10
 - scikit-learn
 - pandas
 - numpy

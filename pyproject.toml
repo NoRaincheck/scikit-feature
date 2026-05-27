@@ -16,7 +16,7 @@ authors = [
 maintainers = [
     { name = "HeardACat" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "scikit-learn",
     "pandas",
@@ -45,7 +45,7 @@ docs = []
 
 [tool.ruff]
 line-length = 120
-target-version = "py39"
+target-version = "py310"
 exclude = [".git", "__pycache__", "dist", "build"]
 
 [tool.ruff.lint]
