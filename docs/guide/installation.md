@@ -13,7 +13,7 @@ pip install skfeature-chappers
 To install from the latest source code:
 
 ```bash
-git clone https://github.com/HeardACat/scikit-feature.git
+git clone https://github.com/NoRaincheck/scikit-feature.git
 cd scikit-feature
 pip install -e .
 ```

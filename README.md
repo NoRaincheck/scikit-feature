@@ -7,7 +7,7 @@ This is may or may not be a temporary fork of the original repository as develop
 
 **Forked project information**
 
-*  Project site - https://github.com/HeardACat/scikit-feature
+*  Project site - https://github.com/NoRaincheck/scikit-feature
 *  Documentation - ./index.html (open locally via `make serve-docs`)
 
 **Original `scikit-feature` project information**

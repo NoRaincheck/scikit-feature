@@ -7,5 +7,5 @@
 - **Well Documented** — Extensive documentation and examples
 - **Actively Maintained** — Updated for modern scikit-learn compatibility
 
-[GitHub](https://github.com/HeardACat/scikit-feature)
+[GitHub](https://github.com/NoRaincheck/scikit-feature)
 [Get Started](guide/getting-started.md)

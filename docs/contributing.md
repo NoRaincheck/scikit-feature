@@ -6,7 +6,7 @@ We welcome contributions to scikit-feature! This document provides guidelines fo
 
 ```bash
 # Clone the repository
-git clone https://github.com/HeardACat/scikit-feature.git
+git clone https://github.com/NoRaincheck/scikit-feature.git
 cd scikit-feature
 
 # Install dependencies and package in editable mode

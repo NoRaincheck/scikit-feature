@@ -31,15 +31,11 @@ MAINTAINER = "HeardACat"
 
 MAINTAINER_EMAIL = ""
 
-URL = "https://github.com/HeardACat/scikit-feature"
+URL = "https://github.com/NoRaincheck/scikit-feature"
 
 VERSION = "1.1.3"
 
-REQUIRED = [
-    "scikit-learn",
-    "pandas",
-    "numpy"
-]
+REQUIRED = ["scikit-learn", "pandas", "numpy"]
 
 REQUIRED_CI = [
     "pytest",
@@ -50,17 +46,15 @@ setup(
     name=NAME,
     version=VERSION,
     description=DESCRIPTION,
-	long_description=open("README.md", "r").read(),
-	long_description_content_type="text/markdown",
+    long_description=open("README.md", "r").read(),
+    long_description_content_type="text/markdown",
     keywords=KEYWORDS,
     author=AUTHOR,
     install_requires=REQUIRED,
     author_email=AUTHOR_EMAIL,
     maintainer=MAINTAINER,
     maintainer_email=MAINTAINER_EMAIL,
-    extras_require={
-        "ci": REQUIRED_CI
-    },
+    extras_require={"ci": REQUIRED_CI},
     url=URL,
     packages=[
         "skfeature",
