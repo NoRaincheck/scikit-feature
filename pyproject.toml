@@ -41,6 +41,7 @@ dev = [
     "ruff>=0.15.14",
     "ty>=0.0.39",
 ]
+docs = []
 
 [tool.ruff]
 line-length = 120

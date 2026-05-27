@@ -50,8 +50,7 @@ coverage.xml
 # Django stuff:
 *.log
 
-# Sphinx documentation
-docs/_build/
+# Docsify (served statically, no build step needed)
 
 # PyBuilder
 target/

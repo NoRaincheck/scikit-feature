@@ -8,6 +8,7 @@ This is may or may not be a temporary fork of the original repository as develop
 **Forked project information**
 
 *  Project site - https://github.com/HeardACat/scikit-feature
+*  Documentation - ./index.html (open locally via `make serve-docs`)
 
 **Original `scikit-feature` project information**
 
@@ -24,8 +25,16 @@ Installation
 
 # From pip
 
-```sh
+```bash
 pip install skfeature-chappers
+```
 
+## Running the Documentation Locally
+
+To view documentation locally:
+
+```bash
+make serve-docs
+# Then open http://localhost:8080 in your browser
 ```
 

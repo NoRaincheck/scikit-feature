@@ -44,13 +44,6 @@ REQUIRED = [
 REQUIRED_CI = [
     "pytest",
     "pytest-cov",
-    "black",
-    "isort",
-    "flake8",
-    "mkdocs", "mkdocs-material",
-    "mkdocstrings",
-    "pytkdocs[numpy-style]"
-
 ]
 
 setup(
