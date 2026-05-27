@@ -25,5 +25,5 @@ def test_reliefF():
     kfold = KFold(n_splits=2, shuffle=True)
 
     results = cross_val_score(model, X, y, cv=kfold)
-    print("Accuracy: {}".format(results.mean()))
+    print(f"Accuracy: {results.mean()}")
     assert results.mean() > 0.1

@@ -78,12 +78,14 @@ def cfs(X, y, mode="rank"):
                 F.pop()
         F.append(idx)
         M.append(merit)
-        if len(M) > 5:
-            if M[len(M) - 1] <= M[len(M) - 2]:
-                if M[len(M) - 2] <= M[len(M) - 3]:
-                    if M[len(M) - 3] <= M[len(M) - 4]:
-                        if M[len(M) - 4] <= M[len(M) - 5]:
-                            break
+        if (
+            len(M) > 5
+            and M[len(M) - 1] <= M[len(M) - 2]
+            and M[len(M) - 2] <= M[len(M) - 3]
+            and M[len(M) - 3] <= M[len(M) - 4]
+            and M[len(M) - 4] <= M[len(M) - 5]
+        ):
+            break
 
     if mode == "index":
         return np.array(F)

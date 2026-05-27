@@ -25,5 +25,5 @@ def test_trace_ratio():
     model = Pipeline(pipeline)
 
     results = cross_val_score(model, X, y, cv=kfold)
-    print("Accuracy: {}".format(results.mean()))
+    print(f"Accuracy: {results.mean()}")
     assert results.mean() > 0.1

@@ -68,23 +68,11 @@ def udfs(X, y=None, mode="rank", **kwargs):
         return np.trace(np.dot(np.dot(W.T, M), W)) + gamma * calculate_l21_norm(W)
 
     # default gamma is 0.1
-    if "gamma" not in kwargs:
-        gamma = 0.1
-    else:
-        gamma = kwargs["gamma"]
+    gamma = kwargs.get("gamma", 0.1)
     # default k is set to be 5
-    if "k" not in kwargs:
-        k = 5
-    else:
-        k = kwargs["k"]
-    if "n_clusters" not in kwargs:
-        n_clusters = 5
-    else:
-        n_clusters = kwargs["n_clusters"]
-    if "verbose" not in kwargs:
-        verbose = False
-    else:
-        verbose = kwargs["verbose"]
+    k = kwargs.get("k", 5)
+    n_clusters = kwargs.get("n_clusters", 5)
+    verbose = kwargs.get("verbose", False)
 
     # construct M
     n_sample, n_feature = X.shape
@@ -104,7 +92,7 @@ def udfs(X, y=None, mode="rank", **kwargs):
 
         obj[iter_step] = calculate_obj(X, W, M, gamma)
         if verbose:
-            print("obj at iter {0}: {1}".format(iter_step + 1, obj[iter_step]))
+            print(f"obj at iter {iter_step + 1}: {obj[iter_step]}")
 
         if iter_step >= 1 and math.fabs(obj[iter_step] - obj[iter_step - 1]) < 1e-3:
             break

@@ -6,7 +6,7 @@ from skfeature.utility.sparse_learning import tree_lasso_projection, tree_norm
 
 
 def tree_fs(X, y, z, idx, **kwargs):
-    """
+    r"""
     This function implements tree structured group lasso regularization with least square loss, i.e.,
     min_{w} ||Xw-Y||_2^2 + z\sum_{i}\sum_{j} h_{j}^{i}|||w_{G_{j}^{i}}|| where h_{j}^{i} is the weight for
     the j-th group from the i-th level (the root node is in level 0)
@@ -48,10 +48,7 @@ def tree_fs(X, y, z, idx, **kwargs):
         http://www.public.asu.edu/~jye02/Software/SLEP, 2009.
     """
 
-    if "verbose" not in kwargs:
-        verbose = False
-    else:
-        verbose = kwargs["verbose"]
+    verbose = kwargs.get("verbose", False)
 
     # starting point initialization
     n_samples, n_features = X.shape
@@ -138,7 +135,7 @@ def tree_fs(X, y, z, idx, **kwargs):
         obj[iter_step] = np.inner(Xwy, Xwy) / 2 + z * tree_norm_val
 
         if verbose:
-            print("obj at iter {0}: {1}".format(iter_step + 1, obj[iter_step]))
+            print(f"obj at iter {iter_step + 1}: {obj[iter_step]}")
         if flag is True:
             break
 

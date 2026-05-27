@@ -32,11 +32,7 @@ def fcbf(X, y, mode="rank", **kwargs):
     """
 
     n_samples, n_features = X.shape
-    if "delta" in list(kwargs.keys()):
-        delta = kwargs["delta"]
-    else:
-        # the default value of delta is 0
-        delta = 0
+    delta = kwargs.get("delta", 0)
 
     # t1[:,0] stores index of features, t1[:,1] stores symmetrical uncertainty of features
     t1 = np.zeros((n_features, 2))

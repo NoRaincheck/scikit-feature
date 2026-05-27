@@ -49,14 +49,8 @@ def rfs(X, Y_flat, mode="rank", **kwargs):
     # convert Y_flat to one hot encoded
     Y = construct_label_matrix_pan(Y_flat)
     # default gamma is 1
-    if "gamma" not in kwargs:
-        gamma = 1
-    else:
-        gamma = kwargs["gamma"]
-    if "verbose" not in kwargs:
-        verbose = False
-    else:
-        verbose = kwargs["verbose"]
+    gamma = kwargs.get("gamma", 1)
+    verbose = kwargs.get("verbose", False)
 
     n_samples, n_features = X.shape
     A = np.zeros((n_samples, n_samples + n_features))
@@ -77,7 +71,7 @@ def rfs(X, Y_flat, mode="rank", **kwargs):
         obj[iter_step] = calculate_obj(X, Y, U[0:n_features, :], gamma)
 
         if verbose:
-            print("obj at iter {0}: {1}".format(iter_step + 1, obj[iter_step]))
+            print(f"obj at iter {iter_step + 1}: {obj[iter_step]}")
         if iter_step >= 1 and math.fabs(obj[iter_step] - obj[iter_step - 1]) < 1e-3:
             break
 

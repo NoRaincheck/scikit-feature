@@ -35,7 +35,7 @@ def test_spec():
     # perform kmeans clustering based on the selected features and repeats 20 times
     nmi_total = 0
     acc_total = 0
-    for i in range(0, 20):
+    for _i in range(0, 20):
         nmi, acc = unsupervised_evaluation.evaluation(X_selected=selected_features, n_clusters=num_cluster, y=y)
         nmi_total += nmi
         acc_total += acc
@@ -63,5 +63,5 @@ def test_spec_supervised():
     # split data into 10 folds
     kfold = KFold(n_splits=2, shuffle=True)
     results = cross_val_score(model, X, y, cv=kfold)
-    print("Accuracy: {}".format(results.mean()))
+    print(f"Accuracy: {results.mean()}")
     assert results.mean() > 0.1

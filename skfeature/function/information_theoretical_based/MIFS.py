@@ -33,10 +33,7 @@ def mifs(X, y, mode="rank", **kwargs):
     Theoretic Feature Selection." JMLR 2012.
     """
 
-    if "beta" not in list(kwargs.keys()):
-        beta = 0.5
-    else:
-        beta = kwargs["beta"]
+    beta = 0.5 if "beta" not in list(kwargs.keys()) else kwargs["beta"]
     if "n_selected_features" in list(kwargs.keys()):
         n_selected_features = kwargs["n_selected_features"]
         F, J_CMI, MIfy = LCSI.lcsi(X, y, beta=beta, gamma=0, n_selected_features=n_selected_features)

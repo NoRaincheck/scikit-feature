@@ -45,15 +45,9 @@ def mcfs(X, y=None, n_selected_features=None, mode="rank", **kwargs):
         n_selected_features = int(X.shape[1])
 
     # use the default affinity matrix
-    if "W" not in kwargs:
-        W = construct_W(X)
-    else:
-        W = kwargs["W"]
+    W = construct_W(X) if "W" not in kwargs else kwargs["W"]
     # default number of clusters is 5
-    if "n_clusters" not in kwargs:
-        n_clusters = 5
-    else:
-        n_clusters = kwargs["n_clusters"]
+    n_clusters = kwargs.get("n_clusters", 5)
 
     # solve the generalized eigen-decomposition problem and get the top K
     # eigen-vectors with respect to the smallest eigenvalues

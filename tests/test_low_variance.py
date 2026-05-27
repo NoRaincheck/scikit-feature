@@ -31,7 +31,7 @@ def test_low_variance():
     # perform kmeans clustering based on the selected features and repeats 20 times
     nmi_total = 0
     acc_total = 0
-    for i in range(0, 20):
+    for _i in range(0, 20):
         nmi, acc = unsupervised_evaluation.evaluation(X_selected=selected_features, n_clusters=num_cluster, y=y)
         nmi_total += nmi
         acc_total += acc

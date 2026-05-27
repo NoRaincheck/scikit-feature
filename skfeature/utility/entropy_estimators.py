@@ -151,7 +151,7 @@ def micd(x, y, k=3, base=2, warning=True):
             mi -= word_dict[yval] * entropy(xgiveny, k, base)
         else:
             if warning:
-                msg = "Warning, after conditioning, on y={0} insufficient data. ".format(yval)
+                msg = f"Warning, after conditioning, on y={yval} insufficient data. "
                 msg += "Assuming maximal entropy in this case."
                 print(msg)
             mi -= word_dict[yval] * overallentropy
@@ -177,7 +177,7 @@ def shuffle_test(measure, x, y, z=False, ns=200, ci=0.95, **kwargs):
 
     xp = x[:]  # A copy that we can shuffle
     outputs = []
-    for i in range(ns):
+    for _i in range(ns):
         random.shuffle(xp)
         if z:
             outputs.append(measure(xp, y, z, **kwargs))

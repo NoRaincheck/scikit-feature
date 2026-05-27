@@ -93,23 +93,11 @@ def ndfs(X, y=None, mode="rank", **kwargs):
         return obj
 
     # default gamma is 10e8
-    if "gamma" not in kwargs:
-        gamma = 10e8
-    else:
-        gamma = kwargs["gamma"]
+    gamma = kwargs.get("gamma", 1000000000.0)
     # use the default affinity matrix
-    if "W" not in kwargs:
-        W = construct_W(X)
-    else:
-        W = kwargs["W"]
-    if "alpha" not in kwargs:
-        alpha = 1
-    else:
-        alpha = kwargs["alpha"]
-    if "beta" not in kwargs:
-        beta = 1
-    else:
-        beta = kwargs["beta"]
+    W = construct_W(X) if "W" not in kwargs else kwargs["W"]
+    alpha = kwargs.get("alpha", 1)
+    beta = kwargs.get("beta", 1)
     if "F0" not in kwargs:
         if "n_clusters" not in kwargs:
             raise Exception("either F0 or n_clusters should be provided")
@@ -119,10 +107,7 @@ def ndfs(X, y=None, mode="rank", **kwargs):
             F = kmeans_initialization(X, n_clusters)
     else:
         F = kwargs["F0"]
-    if "verbose" not in kwargs:
-        verbose = False
-    else:
-        verbose = kwargs["verbose"]
+    verbose = kwargs.get("verbose", False)
 
     n_samples, n_features = X.shape
 
@@ -159,7 +144,7 @@ def ndfs(X, y=None, mode="rank", **kwargs):
             np.dot(F.transpose(), F) - np.identity(n_clusters), "fro"
         )
         if verbose:
-            print("obj at iter {0}: {1}".format(iter_step + 1, obj[iter_step]))
+            print(f"obj at iter {iter_step + 1}: {obj[iter_step]}")
         if iter_step >= 1 and math.fabs(obj[iter_step] - obj[iter_step - 1]) < 1e-3:
             break
     F = feature_ranking(W)

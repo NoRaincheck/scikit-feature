@@ -99,7 +99,7 @@ def spec(X, y=None, mode="rank", **kwargs):
         elif kwargs["is_classification"]:
             kwargs["W"] = similiarity_classification(X, y)
         else:
-            kwargs["W"] = similarity_regression(X, y, kwargs.get("n_neighbors", None))
+            kwargs["W"] = similarity_regression(X, y, kwargs.get("n_neighbors"))
 
     style = kwargs["style"]
     W = kwargs["W"]

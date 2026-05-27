@@ -53,10 +53,7 @@ def proximal_gradient_descent(X, Y_flat, z, mode="rank", **kwargs):
         ratio = a / b
         return ratio
 
-    if "verbose" not in kwargs:
-        verbose = False
-    else:
-        verbose = kwargs["verbose"]
+    verbose = kwargs.get("verbose", False)
 
     # convert Y_flat to one hot encoded
     Y = construct_label_matrix_pan(Y_flat)
@@ -148,7 +145,7 @@ def proximal_gradient_descent(X, Y_flat, z, mode="rank", **kwargs):
         obj[iter_step] += z * calculate_l21_norm(W)
 
         if verbose:
-            print("obj at iter {0}: {1}".format(iter_step + 1, obj[iter_step]))
+            print(f"obj at iter {iter_step + 1}: {obj[iter_step]}")
         if flag is True:
             break
 
@@ -162,4 +159,4 @@ def proximal_gradient_descent(X, Y_flat, z, mode="rank", **kwargs):
         idx = feature_ranking(W).tolist()
         return reverse_argsort(idx, size=X.shape[1])
     else:
-        print('Invalid mode {} selected, should be one of "raw" or "rank"'.format(mode))
+        print(f'Invalid mode {mode} selected, should be one of "raw" or "rank"')

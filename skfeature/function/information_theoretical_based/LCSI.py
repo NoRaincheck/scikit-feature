@@ -38,14 +38,8 @@ def lcsi(X, y, mode="rank", **kwargs):
     Theoretic Feature Selection." JMLR 2012.
     """
 
-    if "beta" not in list(kwargs.keys()):
-        beta = 0.8
-    else:
-        beta = kwargs["beta"]
-    if "gamma" not in list(kwargs.keys()):
-        gamma = 0.5
-    else:
-        gamma = kwargs["gamma"]
+    beta = 0.8 if "beta" not in list(kwargs.keys()) else kwargs["beta"]
+    gamma = 0.5 if "gamma" not in list(kwargs.keys()) else kwargs["gamma"]
 
     n_samples, n_features = X.shape
     # index of selected features, initialized to be empty

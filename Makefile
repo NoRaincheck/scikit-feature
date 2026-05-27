@@ -1,18 +1,21 @@
-install-python-ci-dependencies:
-	pip install -e ".[ci]"
+.PHONY: install test format lint help
 
+help:
+	@echo "Available commands:"
+	@echo "  make install   - Install project and dev dependencies via uv"
+	@echo "  make test      - Run pytest on the tests/ directory"
+	@echo "  make format    - Format code with ruff format"
+	@echo "  make lint      - Lint code with ruff check"
 
-test-python:
-	pytest tests
+install:
+	uv sync --group dev
+	uv pip install -e .
 
-format-python:
-	# Sort
-	isort skfeature/ tests/
+test:
+	uv run pytest tests/
 
-	# Format
-	black --target-version py37 skfeature tests
+format:
+	uv run ruff format skfeature/ tests/
 
-lint-python:
-	isort skfeature/ tests/ --check-only
-	flake8 skfeature/ tests/
-	black --check skfeature tests
+lint:
+	uv run ruff check skfeature/ tests/

@@ -44,10 +44,7 @@ def group_fs(X, y, z1, z2, idx, **kwargs):
         Liu, Jun, et al. "SLEP: Sparse Learning with Efficient Projections."
         http://www.public.asu.edu/~jye02/Software/SLEP, 2009.
     """
-    if "verbose" not in kwargs:
-        verbose = False
-    else:
-        verbose = kwargs["verbose"]
+    verbose = kwargs.get("verbose", False)
 
     # starting point initialization
     n_samples, n_features = X.shape
@@ -137,7 +134,7 @@ def group_fs(X, y, z1, z2, idx, **kwargs):
         obj[iter_step] = np.inner(Xwy, Xwy) / 2 + tree_norm_val
 
         if verbose:
-            print("obj at iter {0}: {1}".format(iter_step + 1, obj[iter_step]))
+            print(f"obj at iter {iter_step + 1}: {obj[iter_step]}")
         if flag is True:
             break
 

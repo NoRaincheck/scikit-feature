@@ -9,8 +9,8 @@ def soft_threshold(A, b):
         b: scalar}
     """
     res = np.zeros(A.shape)
-    res[A > b] = A[A > b] - b
-    res[A < -b] = A[A < -b] + b
+    res[b < A] = A[b < A] - b
+    res[-b > A] = A[-b > A] + b
     return res
 
 
@@ -23,7 +23,7 @@ def calculate_obj(X, y, w, lambda1, lambda2, T):
 
 
 def graph_fs(X, y, **kwargs):
-    """
+    r"""
     This function implement the graph structural feature selection algorithm GOSCAR
 
     Objective Function
@@ -52,31 +52,16 @@ def graph_fs(X, y, **kwargs):
         obj: the value of the objective function in each iteration
     """
 
-    if "lambda1" not in kwargs:
-        lambda1 = 0.8
-    else:
-        lambda1 = kwargs["lambda1"]
-    if "lambda2" not in kwargs:
-        lambda2 = 0.8
-    else:
-        lambda2 = kwargs["lambda2"]
+    lambda1 = kwargs.get("lambda1", 0.8)
+    lambda2 = kwargs.get("lambda2", 0.8)
     if "edge_list" not in kwargs:
         print("Error using function, the network structure E is required")
         raise ()
     else:
         edge_list = kwargs["edge_list"]
-    if "max_iter" not in kwargs:
-        max_iter = 300
-    else:
-        max_iter = kwargs["max_iter"]
-    if "verbose" not in kwargs:
-        verbose = 0
-    else:
-        verbose = kwargs["verbose"]
-    if "rho" not in kwargs:
-        rho = 5
-    else:
-        rho = kwargs["rho"]
+    max_iter = kwargs.get("max_iter", 300)
+    verbose = kwargs.get("verbose", 0)
+    rho = kwargs.get("rho", 5)
 
     n_samples, n_features = X.shape
 
@@ -128,7 +113,7 @@ def graph_fs(X, y, **kwargs):
         # calculate objective function
         obj[iter] = calculate_obj(X, y, w, lambda1, lambda2, T)
         if verbose:
-            print("obj at iter {0}: {1}".format(iter, obj[iter]))
+            print(f"obj at iter {iter}: {obj[iter]}")
         iter += 1
     return w, obj, q
 

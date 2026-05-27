@@ -38,10 +38,7 @@ def reliefF(X, y, mode="rank", **kwargs):
         idx = np.argsort(score, 0)
         return idx[::-1]
 
-    if "k" not in list(kwargs.keys()):
-        k = 5
-    else:
-        k = kwargs["k"]
+    k = 5 if "k" not in list(kwargs.keys()) else kwargs["k"]
     n_samples, n_features = X.shape
 
     # calculate pairwise distances between instances
@@ -92,7 +89,7 @@ def reliefF(X, y, mode="rank", **kwargs):
                     if len(near_miss[distance_sort[i][2]]) == k:
                         stop_dict[distance_sort[i][2]] = 1
             stop = True
-            for key, value in list(stop_dict.items()):
+            for _key, value in list(stop_dict.items()):
                 if value != 1:
                     stop = False
             if stop:
