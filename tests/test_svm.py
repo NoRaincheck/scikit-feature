@@ -1,55 +1,48 @@
 from sklearn import svm
-from sklearn.feature_selection import SelectKBest
-from sklearn.model_selection import KFold, cross_val_score
-from sklearn.pipeline import Pipeline
+from sklearn.datasets import make_classification
+from sklearn.model_selection import KFold
+from sklearn.preprocessing import KBinsDiscretizer
 
 from skfeature.function.wrapper import svm_backward, svm_forward
 
 
-def test_svm_backward():
-    # load data
-    # load data
-    from sklearn.datasets import make_classification
-
-    X, y = make_classification(n_samples=200, n_features=20, n_informative=5, n_redundant=5, n_classes=2)
+def _discrete_classification_data():
+    X, y = make_classification(n_samples=400, n_features=30, n_informative=8, n_redundant=8, flip_y=0.02, n_classes=2)
     X = X.astype(float)
-    _n_samples, _n_features = X.shape  # number of samples and number of features
+    X = KBinsDiscretizer(n_bins=5, encode="ordinal").fit_transform(X)
+    return X.astype(float), y
 
-    num_fea = 5
 
-    # split data into 10 folds
+def test_svm_backward():
+    X, y = _discrete_classification_data()
     kfold = KFold(n_splits=2, shuffle=True)
 
-    # build pipeline
-    pipeline = []
-    pipeline.append(("select top k", SelectKBest(score_func=svm_backward.svm_backward, k=num_fea)))
-    pipeline.append(("linear svm", svm.LinearSVC()))
-    model = Pipeline(pipeline)
+    # svm_backward needs the number of features to keep, so it cannot be wired
+    # through SelectKBest; call it directly and refit on the selected subset
+    accuracies = []
+    for train_index, test_index in kfold.split(X):
+        F = svm_backward.svm_backward(X[train_index], y[train_index], n_selected_features=10, mode="index")
+        clf = svm.LinearSVC()
+        clf.fit(X[train_index][:, F], y[train_index])
+        accuracies.append(clf.score(X[test_index][:, F], y[test_index]))
 
-    results = cross_val_score(model, X, y, cv=kfold)
-    print(f"Accuracy: {results.mean()}")
-    assert results.mean() > 0.1
+    results = accuracies
+    print(f"Accuracy: {sum(results) / len(results)}")
+    assert sum(results) / len(results) > 0.6
 
 
 def test_svm_forward():
-    # load data
-    from sklearn.datasets import make_classification
-
-    X, y = make_classification(n_samples=200, n_features=20, n_informative=5, n_redundant=5, n_classes=2)
-    X = X.astype(float)
-    _n_samples, _n_features = X.shape  # number of samples and number of features
-
-    num_fea = 5
-
-    # split data into 10 folds
+    X, y = _discrete_classification_data()
     kfold = KFold(n_splits=2, shuffle=True)
 
-    # build pipeline
-    pipeline = []
-    pipeline.append(("select top k", SelectKBest(score_func=svm_forward.svm_forward, k=num_fea)))
-    pipeline.append(("linear svm", svm.LinearSVC()))
-    model = Pipeline(pipeline)
+    # svm_forward needs the number of features to keep, so call it directly
+    accuracies = []
+    for train_index, test_index in kfold.split(X):
+        F = svm_forward.svm_forward(X[train_index], y[train_index], n_selected_features=10, mode="index")
+        clf = svm.LinearSVC()
+        clf.fit(X[train_index][:, F], y[train_index])
+        accuracies.append(clf.score(X[test_index][:, F], y[test_index]))
 
-    results = cross_val_score(model, X, y, cv=kfold)
-    print(f"Accuracy: {results.mean()}")
-    assert results.mean() > 0.1
+    results = accuracies
+    print(f"Accuracy: {sum(results) / len(results)}")
+    assert sum(results) / len(results) > 0.6

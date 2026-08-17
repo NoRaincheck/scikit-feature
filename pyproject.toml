@@ -38,7 +38,7 @@ include = ["skfeature*"]
 [dependency-groups]
 dev = [
     "pytest>=8.4.2",
-    "ruff>=0.15.14",
+    "ruff>=0.16",
     "ty>=0.0.39",
 ]
 docs = []

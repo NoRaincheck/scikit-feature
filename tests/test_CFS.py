@@ -1,29 +1,27 @@
 from sklearn import svm
+from sklearn.datasets import make_classification
 from sklearn.feature_selection import SelectKBest
 from sklearn.model_selection import KFold, cross_val_score
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import KBinsDiscretizer
 
 from skfeature.function.statistical_based import CFS
 
 
 def test_cfs():
-    # load data
-    from sklearn.datasets import make_classification
-
-    X, y = make_classification(n_samples=200, n_features=20, n_informative=5, n_redundant=5, n_classes=2)
+    X, y = make_classification(n_samples=400, n_features=30, n_informative=8, n_redundant=8, flip_y=0.02, n_classes=2)
     X = X.astype(float)
-    _n_samples, _n_features = X.shape  # number of samples and number of features
 
-    num_fea = 5
+    # the correlation-based heuristic relies on symmetric uncertainty, so the data must be discrete
+    X = KBinsDiscretizer(n_bins=5, encode="ordinal").fit_transform(X)
+    X = X.astype(float)
+
+    num_fea = 10
+    kfold = KFold(n_splits=2, shuffle=True)
 
     # build pipeline
-    pipeline = []
-    pipeline.append(("select top k", SelectKBest(score_func=CFS.cfs, k=num_fea)))
-    pipeline.append(("linear svm", svm.LinearSVC()))
-    model = Pipeline(pipeline)
+    pipeline = Pipeline([("select top k", SelectKBest(score_func=CFS.cfs, k=num_fea)), ("linear svm", svm.LinearSVC())])
 
-    # split data into 10 folds
-    kfold = KFold(n_splits=2, shuffle=True)
-    results = cross_val_score(model, X, y, cv=kfold)
+    results = cross_val_score(pipeline, X, y, cv=kfold)
     print(f"Accuracy: {results.mean()}")
-    assert results.mean() > 0.1
+    assert results.mean() > 0.6

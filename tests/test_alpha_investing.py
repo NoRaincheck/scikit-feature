@@ -1,33 +1,26 @@
 from sklearn import svm
+from sklearn.datasets import make_classification
 from sklearn.model_selection import KFold, cross_val_score
 from sklearn.pipeline import Pipeline
 
 from skfeature.function.streaming import alpha_investing
-from skfeature.utility.util import loadmat
 
 
 def test_alphainvesting():
-    # load data
-    mat = loadmat("./data/COIL20.mat")
-    X = mat["X"]  # data
+    X, y = make_classification(n_samples=200, n_features=20, n_informative=5, n_redundant=5, n_classes=2)
     X = X.astype(float)
-    y = mat["Y"]  # label
-    y = y[:, 0]
     y = y.astype(float)
-    _n_samples, _n_features = X.shape  # number of samples and number of features
 
-    # reduce cols to speed up test - rather than wait a minute
-    X = X[:, :100]
-
-    # split data into 10 folds
     kfold = KFold(n_splits=2, shuffle=True)
 
     # build pipeline
-    pipeline = []
-    pipeline.append(("alphainvesting", alpha_investing.AlphaInvesting(w0=0.05, dw=0.05)))
-    pipeline.append(("linear svm", svm.LinearSVC()))
-    model = Pipeline(pipeline)
+    pipeline = Pipeline(
+        [
+            ("alphainvesting", alpha_investing.AlphaInvesting(w0=0.05, dw=0.05)),
+            ("linear svm", svm.LinearSVC()),
+        ]
+    )
 
-    results = cross_val_score(model, X, y, cv=kfold)
+    results = cross_val_score(pipeline, X, y, cv=kfold)
     print(f"Accuracy: {results.mean()}")
-    assert results.mean() > 0.1
+    assert results.mean() > 0.6

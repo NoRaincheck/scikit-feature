@@ -4,7 +4,7 @@ from scipy.sparse import rand
 from skfeature.function.structure import tree_fs
 
 
-def main():
+def test_tree_fs():
     n_samples = 50  # specify the number of samples in the simulated data
     n_features = 100  # specify the number of features in the simulated data
 
@@ -12,7 +12,7 @@ def main():
     X = np.random.rand(n_samples, n_features)
 
     # simulate the feature weight
-    w_orin = rand(n_features, 1, 1).toarray()
+    w_orin = rand(n_features, 1, 1, random_state=0).toarray()
     w_orin[0:50] = 0
 
     # obtain the ground truth of the simulated dataset
@@ -20,8 +20,7 @@ def main():
     y = np.dot(X, w_orin) + 0.01 * noise
     y = y[:, 0]
 
-    # specify the regularization parameter of regularization parameter of L2 norm for the non-overlapping group
-    z = 0.01
+    z = 0.1  # L2 regularization parameter of the L2 norm for the non-overlapping group
 
     # specify the tree structure among features
     idx = np.array(
@@ -39,8 +38,13 @@ def main():
     idx = idx.astype(int)
 
     # perform feature selection and obtain the feature weight of all the features
-    _w, _obj, _value_gamma = tree_fs.tree_fs(X, y, z, idx, verbose=True)
+    w, obj, value_gamma = tree_fs.tree_fs(X, y, z, idx, verbose=False)
 
+    assert w.shape == (n_features,)
+    assert np.all(np.isfinite(w))
+    assert np.all(np.isfinite(value_gamma))
 
-if __name__ == "__main__":
-    main()
+    # objective should decrease consistently across iterations
+    active = obj > 0
+    assert active.sum() > 10
+    assert obj[active][0] > obj[active][-1]

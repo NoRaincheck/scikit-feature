@@ -10,7 +10,6 @@ from skfeature.utility.util import loadmat
 
 
 def test_udfs():
-    # load data
     mat = loadmat("./data/COIL20.mat")
     X = mat["X"]  # data
     X = X.astype(float)
@@ -26,7 +25,7 @@ def test_udfs():
     pipeline.append(("select top k", SelectKBest(score_func=udfs_partial, k=num_fea)))
     model = Pipeline(pipeline)
 
-    # set y param to be 0 to demonstrate that this works in unsupervised sense.
+    # set y param to be 0 to demonstrate that this works in unsupervised sense
     selected_features = model.fit_transform(X, y=np.zeros(X.shape[0]))
 
     # perform kmeans clustering based on the selected features and repeats 20 times
@@ -38,5 +37,10 @@ def test_udfs():
         acc_total += acc
 
     # output the average NMI and average ACC
-    print(("NMI:", float(nmi_total) / 20))
-    print(("ACC:", float(acc_total) / 20))
+    avg_nmi = float(nmi_total) / 20
+    avg_acc = float(acc_total) / 20
+    print(f"NMI: {avg_nmi}")
+    print(f"ACC: {avg_acc}")
+
+    assert avg_nmi > 0.6
+    assert avg_acc > 0.55

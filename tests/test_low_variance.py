@@ -1,43 +1,27 @@
 import numpy as np
+from sklearn.datasets import make_blobs
 from sklearn.pipeline import Pipeline
 
 from skfeature.function.statistical_based import low_variance
 from skfeature.utility import unsupervised_evaluation
-from skfeature.utility.util import loadmat
 
 
 def test_low_variance():
-    # load data
+    # create two well-separated blobs that should be clusterable after selection
+    X_blob, y_blob = make_blobs(n_samples=200, n_features=20, centers=2, cluster_std=0.6, random_state=0)
+    # append constant features that a variance threshold should prune
+    X_const = np.zeros((X_blob.shape[0], 10))
+    X = np.column_stack([X_blob, X_const])
 
-    mat = loadmat("./data/BASEHOCK.mat")
-    X = mat["X"]  # data
-    X = X.astype(float)
-    y = mat["Y"]  # label
-    y = y[:, 0]
+    threshold = 0.01
+    pipeline = Pipeline([("low_variance", low_variance.low_variance_feature_selection(threshold=threshold))])
+    # set y param to be 0 to demonstrate that this works in unsupervised sense
+    selected_features = pipeline.fit_transform(X, y=np.zeros(X.shape[0]))
 
-    p = 0.1  # specify the threshold p to be 0.1
-    num_cluster = 2  # specify the number of clusters to be 2
+    # all constant features are removed, informative ones are kept
+    assert selected_features.shape[1] == X_blob.shape[1]
 
-    # build pipeline
-    pipeline = []
-
-    # this is equivalent to `pipeline.append(('low_variance', VarianceThreshold(threshold=p*(1-p))))`
-    pipeline.append(("low_variance", low_variance.low_variance_feature_selection(threshold=p * (1 - p))))
-    model = Pipeline(pipeline)
-    # set y param to be 0 to demonstrate that this works in unsupervised sense.
-    # perform feature selection and obtain the dataset on the selected features
-    selected_features = model.fit_transform(X, y=np.zeros(X.shape[0]))
-
-    # perform kmeans clustering based on the selected features and repeats 20 times
-    nmi_total = 0
-    acc_total = 0
-    for _i in range(20):
-        nmi, acc = unsupervised_evaluation.evaluation(X_selected=selected_features, n_clusters=num_cluster, y=y)
-        nmi_total += nmi
-        acc_total += acc
-
-    # output the average NMI and average ACC
-    print(("NMI:", float(nmi_total) / 20))
-    print(("ACC:", float(acc_total) / 20))
-    assert float(nmi_total) / 20 > 0.0
-    assert float(acc_total) / 20 > 0.5
+    # the selected features should still recover the two clusters
+    nmi, acc = unsupervised_evaluation.evaluation(X_selected=selected_features, n_clusters=2, y=y_blob)
+    assert nmi > 0.8
+    assert acc > 0.8

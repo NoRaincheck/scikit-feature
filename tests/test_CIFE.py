@@ -8,27 +8,22 @@ from skfeature.utility.util import loadmat
 
 
 def test_cife():
-    # load data
     mat = loadmat("./data/colon.mat")
     X = mat["X"]  # data
     X = X.astype(float)
     y = mat["Y"]  # label
     y = y[:, 0]
-    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     # reduce the sample to speed up the test
     X = X[:, :30]
-    # perform evaluation on classification task
     num_fea = 10  # number of selected features
+    kfold = KFold(n_splits=2, shuffle=True)
 
     # build pipeline
-    pipeline = []
-    pipeline.append(("select top k", SelectKBest(score_func=CIFE.cife, k=num_fea)))
-    pipeline.append(("linear svm", svm.LinearSVC()))
-    model = Pipeline(pipeline)
+    pipeline = Pipeline(
+        [("select top k", SelectKBest(score_func=CIFE.cife, k=num_fea)), ("linear svm", svm.LinearSVC())]
+    )
 
-    # split data into 10 folds
-    kfold = KFold(n_splits=2, shuffle=True)
-    results = cross_val_score(model, X, y, cv=kfold)
+    results = cross_val_score(pipeline, X, y, cv=kfold)
     print(f"Accuracy: {results.mean()}")
-    assert results.mean() > 0.1
+    assert results.mean() > 0.5

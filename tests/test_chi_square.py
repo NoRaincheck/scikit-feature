@@ -8,29 +8,20 @@ from skfeature.utility.util import loadmat
 
 
 def test_chi2():
-    # load data
-    import os
-
-    print(os.getcwd())
     mat = loadmat("./data/BASEHOCK.mat")
     X = mat["X"]  # data
     X = X.astype(float)
     y = mat["Y"]  # label
     y = y[:, 0]
-    _n_samples, _n_features = X.shape  # number of samples and number of features
 
-    # perform evaluation on classification task
     num_fea = 100  # number of selected features
-
-    # build pipeline
-    pipeline = []
-    pipeline.append(("select top k", SelectKBest(score_func=chi_square.chi_square, k=num_fea)))
-    pipeline.append(("linear svm", svm.LinearSVC()))
-    model = Pipeline(pipeline)
-
-    # split data into 10 folds
     kfold = KFold(n_splits=2, shuffle=True)
 
-    results = cross_val_score(model, X, y, cv=kfold)
+    # build pipeline
+    pipeline = Pipeline(
+        [("select top k", SelectKBest(score_func=chi_square.chi_square, k=num_fea)), ("linear svm", svm.LinearSVC())]
+    )
+
+    results = cross_val_score(pipeline, X, y, cv=kfold)
     print(f"Accuracy: {results.mean()}")
-    assert results.mean() > 0.1
+    assert results.mean() > 0.5
