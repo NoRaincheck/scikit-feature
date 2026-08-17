@@ -16,7 +16,10 @@ def test_fisher_score():
 
     # build pipeline
     pipeline = Pipeline(
-        [("select top k", SelectKBest(score_func=fisher_score.fisher_score, k=num_fea)), ("linear svm", svm.LinearSVC())]
+        [
+            ("select top k", SelectKBest(score_func=fisher_score.fisher_score, k=num_fea)),
+            ("linear svm", svm.LinearSVC()),
+        ]
     )
 
     results = cross_val_score(pipeline, X, y, cv=kfold)

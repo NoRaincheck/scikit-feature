@@ -15,7 +15,9 @@ def test_t_score():
     kfold = KFold(n_splits=2, shuffle=True)
 
     # build pipeline
-    pipeline = Pipeline([("select top k", SelectKBest(score_func=t_score.t_score, k=num_fea)), ("linear svm", svm.LinearSVC())])
+    pipeline = Pipeline(
+        [("select top k", SelectKBest(score_func=t_score.t_score, k=num_fea)), ("linear svm", svm.LinearSVC())]
+    )
 
     results = cross_val_score(pipeline, X, y, cv=kfold)
     print(f"Accuracy: {results.mean()}")

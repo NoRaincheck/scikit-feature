@@ -15,7 +15,9 @@ def test_icap():
     kfold = KFold(n_splits=2, shuffle=True)
 
     # build pipeline
-    pipeline = Pipeline([("select top k", SelectKBest(score_func=ICAP.icap, k=num_fea)), ("linear svm", svm.LinearSVC())])
+    pipeline = Pipeline(
+        [("select top k", SelectKBest(score_func=ICAP.icap, k=num_fea)), ("linear svm", svm.LinearSVC())]
+    )
 
     results = cross_val_score(pipeline, X, y, cv=kfold)
     print(f"Accuracy: {results.mean()}")
