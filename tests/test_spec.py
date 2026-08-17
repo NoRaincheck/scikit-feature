@@ -35,7 +35,7 @@ def test_spec():
     # perform kmeans clustering based on the selected features and repeats 20 times
     nmi_total = 0
     acc_total = 0
-    for _i in range(0, 20):
+    for _i in range(20):
         nmi, acc = unsupervised_evaluation.evaluation(X_selected=selected_features, n_clusters=num_cluster, y=y)
         nmi_total += nmi
         acc_total += acc
@@ -50,7 +50,7 @@ def test_spec_supervised():
 
     X, y = make_classification(n_samples=200, n_features=20, n_informative=5, n_redundant=5, n_classes=2)
     X = X.astype(float)
-    n_samples, n_features = X.shape  # number of samples and number of features
+    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     num_fea = 5
 

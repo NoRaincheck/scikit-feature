@@ -13,7 +13,7 @@ def test_svm_backward():
 
     X, y = make_classification(n_samples=200, n_features=20, n_informative=5, n_redundant=5, n_classes=2)
     X = X.astype(float)
-    n_samples, n_features = X.shape  # number of samples and number of features
+    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     num_fea = 5
 
@@ -37,7 +37,7 @@ def test_svm_forward():
 
     X, y = make_classification(n_samples=200, n_features=20, n_informative=5, n_redundant=5, n_classes=2)
     X = X.astype(float)
-    n_samples, n_features = X.shape  # number of samples and number of features
+    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     num_fea = 5
 

@@ -14,7 +14,7 @@ authors = [
     { name = "Suhang Wang", email = "suhang.wang@asu.edu" },
 ]
 maintainers = [
-    { name = "HeardACat" },
+    { name = "NoRaincheck" },
 ]
 requires-python = ">=3.10"
 dependencies = [
@@ -46,13 +46,10 @@ docs = []
 [tool.ruff]
 line-length = 120
 target-version = "py310"
-exclude = [".git", "__pycache__", "dist", "build"]
 
-[tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP", "B", "SIM"]
-ignore = ["E203", "E501"]
+[tool.ruff.lint.per-file-ignores]
+# Upstream scikit-feature uses CamelCase/acronym module names on purpose;
+# keep the public module names intact.
+"skfeature/**" = ["N999"]
+"tests/**" = ["N999"]
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-line-ending = "lf"

@@ -31,7 +31,7 @@ def fcbf(X, y, mode="rank", **kwargs):
         Solution." ICML 2003.
     """
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
     delta = kwargs.get("delta", 0)
 
     # t1[:,0] stores index of features, t1[:,1] stores symmetrical uncertainty of features

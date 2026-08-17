@@ -60,7 +60,7 @@ def ndfs(X, y=None, mode="rank", **kwargs):
             pseudo label matrix
         """
 
-        n_samples, n_features = X.shape
+        n_samples, _n_features = X.shape
         kmeans = sklearn.cluster.KMeans(
             n_clusters=n_clusters,
             init="k-means++",
@@ -73,8 +73,9 @@ def ndfs(X, y=None, mode="rank", **kwargs):
         )
         kmeans.fit(X)
         labels = kmeans.labels_
+        assert labels is not None, "kmeans must be fitted before accessing labels_"
         Y = np.zeros((n_samples, n_clusters))
-        for row in range(0, n_samples):
+        for row in range(n_samples):
             Y[row, labels[row]] = 1
         T = np.dot(Y.transpose(), Y)
         F = np.dot(Y, np.sqrt(np.linalg.inv(T)))
@@ -100,7 +101,7 @@ def ndfs(X, y=None, mode="rank", **kwargs):
     beta = kwargs.get("beta", 1)
     if "F0" not in kwargs:
         if "n_clusters" not in kwargs:
-            raise Exception("either F0 or n_clusters should be provided")
+            raise ValueError("either F0 or n_clusters should be provided")
         else:
             # initialize F
             n_clusters = kwargs["n_clusters"]

@@ -14,7 +14,7 @@ def test_cmim():
     X = X.astype(float)
     y = mat["Y"]  # label
     y = y[:, 0]
-    n_samples, n_features = X.shape  # number of samples and number of features
+    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     # reduce the sample to speed up the test
     X = X[:, :30]

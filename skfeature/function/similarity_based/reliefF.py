@@ -49,17 +49,17 @@ def reliefF(X, y, mode="rank", **kwargs):
     # the number of sampled instances is equal to the number of total instances
     for idx in range(n_samples):
         near_hit = []
-        near_miss = dict()
+        near_miss = {}
 
         self_fea = X[idx, :]
         c = np.unique(y).tolist()
 
-        stop_dict = dict()
+        stop_dict = {}
         for label in c:
             stop_dict[label] = 0
         del c[c.index(y[idx])]
 
-        p_dict = dict()
+        p_dict = {}
         p_label_idx = float(len(y[y == y[idx]])) / float(n_samples)
 
         for label in c:
@@ -100,7 +100,7 @@ def reliefF(X, y, mode="rank", **kwargs):
         for ele in near_hit:
             near_hit_term = np.array(abs(self_fea - X[ele, :])) + np.array(near_hit_term)
 
-        near_miss_term = dict()
+        near_miss_term = {}
         for label, miss_list in list(near_miss.items()):
             near_miss_term[label] = np.zeros(n_features)
             for ele in miss_list:

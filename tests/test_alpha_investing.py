@@ -14,7 +14,7 @@ def test_alphainvesting():
     y = mat["Y"]  # label
     y = y[:, 0]
     y = y.astype(float)
-    n_samples, n_features = X.shape  # number of samples and number of features
+    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     # reduce cols to speed up test - rather than wait a minute
     X = X[:, :100]

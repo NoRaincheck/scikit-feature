@@ -34,7 +34,7 @@ def cmim(X, y, mode="rank", **kwargs):
     Theoretic Feature Selection." JMLR 2012.
     """
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
     # index of selected features, initialized to be empty
     F = []
     # Objective function value for selected features
@@ -51,9 +51,9 @@ def cmim(X, y, mode="rank", **kwargs):
     # t1 stores I(f;y) for each feature f
     t1 = np.zeros(n_features)
 
-    # max stores max(I(fj;f)-I(fj;f|y)) for each feature f
-    # we assign an extreme small value to max[i] ito make it is smaller than possible value of max(I(fj;f)-I(fj;f|y))
-    max = -10000000 * np.ones(n_features)
+    # max_vals stores max(I(fj;f)-I(fj;f|y)) for each feature f
+    # we assign an extreme small value to max_vals[i] to make it smaller than any possible value of max(I(fj;f)-I(fj;f|y))
+    max_vals = -10000000 * np.ones(n_features)
     for i in range(n_features):
         f = X[:, i]
         t1[i] = midd(f, y)
@@ -84,10 +84,9 @@ def cmim(X, y, mode="rank", **kwargs):
                 f = X[:, i]
                 t2 = midd(f_select, f)
                 t3 = cmidd(f_select, f, y)
-                if t2 - t3 > max[i]:
-                    max[i] = t2 - t3
+                max_vals[i] = max(max_vals[i], t2 - t3)
                 # calculate j_cmim for feature i (not in F)
-                t = t1[i] - max[i]
+                t = t1[i] - max_vals[i]
                 # record the largest j_cmim and the corresponding feature index
                 if t > j_cmim:
                     j_cmim = t

@@ -39,7 +39,7 @@ def main():
     idx = idx.astype(int)
 
     # perform feature selection and obtain the feature weight of all the features
-    w, obj, value_gamma = tree_fs.tree_fs(X, y, z, idx, verbose=True)
+    _w, _obj, _value_gamma = tree_fs.tree_fs(X, y, z, idx, verbose=True)
 
 
 if __name__ == "__main__":

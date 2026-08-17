@@ -47,3 +47,6 @@ jobs:
 
       - name: Run ruff linting
         run: uv run ruff check skfeature/ tests/
+
+      - name: Run ty type checking
+        run: uv run ty check skfeature/ tests/

@@ -41,7 +41,7 @@ def lcsi(X, y, mode="rank", **kwargs):
     beta = 0.8 if "beta" not in list(kwargs.keys()) else kwargs["beta"]
     gamma = 0.5 if "gamma" not in list(kwargs.keys()) else kwargs["gamma"]
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
     # index of selected features, initialized to be empty
     F = []
     # Objective function value for selected features

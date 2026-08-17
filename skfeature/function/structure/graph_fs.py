@@ -56,14 +56,14 @@ def graph_fs(X, y, **kwargs):
     lambda2 = kwargs.get("lambda2", 0.8)
     if "edge_list" not in kwargs:
         print("Error using function, the network structure E is required")
-        raise ()
+        raise ValueError("the network structure E is required")
     else:
         edge_list = kwargs["edge_list"]
     max_iter = kwargs.get("max_iter", 300)
     verbose = kwargs.get("verbose", 0)
     rho = kwargs.get("rho", 5)
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
 
     # construct T from E
     ind1 = edge_list[:, 0]

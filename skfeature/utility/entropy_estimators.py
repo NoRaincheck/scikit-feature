@@ -1,11 +1,13 @@
 # Written by Greg Ver Steeg (http://www.isi.edu/~gregv/npeet.html)
 
+import functools
+import operator
 import random
 from math import log
 
 import numpy as np
 import numpy.random as nr
-import scipy.spatial as ss
+from scipy.spatial._kdtree import cKDTree
 from scipy.special import digamma
 
 # continuous estimators
@@ -22,10 +24,10 @@ def entropy(x, k=3, base=2):
     N = len(x)
     intens = 1e-10  # small noise to break degeneracy, see doc.
     x = [list(p + intens * nr.rand(len(x[0]))) for p in x]
-    tree = ss.cKDTree(x)
+    tree = cKDTree(x)
     nn = [tree.query(point, k + 1, p=float("inf"))[0][k] for point in x]
     const = digamma(N) - digamma(k) + d * log(2)
-    return (const + d * np.mean(map(log, nn))) / log(base)
+    return (const + d * np.mean([log(n) for n in nn])) / log(base)
 
 
 def mi(x, y, k=3, base=2):
@@ -41,7 +43,7 @@ def mi(x, y, k=3, base=2):
     y = [list(p + intens * nr.rand(len(y[0]))) for p in y]
     points = zip2(x, y)
     # Find nearest neighbors in joint space, p=inf means max-norm
-    tree = ss.cKDTree(points)
+    tree = cKDTree(points)
     dvec = [tree.query(point, k + 1, p=float("inf"))[0][k] for point in points]
     a, b, c, d = avgdigamma(x, dvec), avgdigamma(y, dvec), digamma(k), digamma(len(x))
     return (-a - b + c + d) / log(base)
@@ -61,7 +63,7 @@ def cmi(x, y, z, k=3, base=2):
     z = [list(p + intens * nr.rand(len(z[0]))) for p in z]
     points = zip2(x, y, z)
     # Find nearest neighbors in joint space, p=inf means max-norm
-    tree = ss.cKDTree(points)
+    tree = cKDTree(points)
     dvec = [tree.query(point, k + 1, p=float("inf"))[0][k] for point in points]
     a, b, c, d = avgdigamma(zip2(x, z), dvec), avgdigamma(zip2(y, z), dvec), avgdigamma(z, dvec), digamma(k)
     return (-a - b + c + d) / log(base)
@@ -80,11 +82,11 @@ def kldiv(x, xp, k=3, base=2):
     n = len(x)
     m = len(xp)
     const = log(m) - log(n - 1)
-    tree = ss.cKDTree(x)
-    treep = ss.cKDTree(xp)
+    tree = cKDTree(x)
+    treep = cKDTree(xp)
     nn = [tree.query(point, k + 1, p=float("inf"))[0][k] for point in x]
     nnp = [treep.query(point, k, p=float("inf"))[0][k - 1] for point in x]
-    return (const + d * np.mean(map(log, nnp)) - d * np.mean(map(log, nn))) / log(base)
+    return (const + d * np.mean([log(n) for n in nnp]) - d * np.mean([log(n) for n in nn])) / log(base)
 
 
 # Discrete estimators
@@ -114,10 +116,10 @@ def cmidd(x, y, z):
 
 def hist(sx):
     # Histogram from list of samples
-    d = dict()
+    d = {}
     for s in sx:
         d[s] = d.get(s, 0) + 1
-    return map(lambda z: float(z) / len(sx), d.values())
+    return (float(z) / len(sx) for z in d.values())
 
 
 def entropyfromprobs(probs, base=2):
@@ -139,7 +141,7 @@ def micd(x, y, k=3, base=2, warning=True):
 
     overallentropy = entropy(x, k, base)
     n = len(y)
-    word_dict = dict()
+    word_dict = {}
     for sample in y:
         word_dict[sample] = word_dict.get(sample, 0) + 1.0 / n
     yvals = list(set(word_dict.keys()))
@@ -192,7 +194,7 @@ def avgdigamma(points, dvec):
     # This part finds number of neighbors in some radius in the marginal space
     # returns expectation value of <psi(nx)>
     N = len(points)
-    tree = ss.cKDTree(points)
+    tree = cKDTree(points)
     avg = 0.0
     for i in range(N):
         dist = dvec[i]
@@ -206,4 +208,4 @@ def avgdigamma(points, dvec):
 def zip2(*args):
     # zip2(x,y) takes the lists of vectors and makes it a list of vectors in a joint space
     # E.g. zip2([[1],[2],[3]],[[4],[5],[6]]) = [[1,4],[2,5],[3,6]]
-    return [sum(sublist, []) for sublist in list(zip(*args))]
+    return [functools.reduce(operator.iadd, sublist, []) for sublist in list(zip(*args))]

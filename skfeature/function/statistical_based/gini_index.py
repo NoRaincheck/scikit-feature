@@ -28,7 +28,7 @@ def gini_index(X, y, mode="rank"):
         idx = np.argsort(W)
         return idx
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
 
     # initialize gini_index for all features to be 0.5
     gini = np.ones(n_features) * 0.5
@@ -69,8 +69,7 @@ def gini_index(X, y, mode="rank"):
             # compute the gini_index for the i-th feature
             value = np.true_divide(t1_gini, len(y))
 
-            if value < gini[i]:
-                gini[i] = value
+            gini[i] = min(gini[i], value)
     F = feature_ranking(gini)
     if mode == "index":
         return np.array(F, dtype=int)

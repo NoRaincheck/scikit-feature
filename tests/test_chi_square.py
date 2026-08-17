@@ -17,7 +17,7 @@ def test_chi2():
     X = X.astype(float)
     y = mat["Y"]  # label
     y = y[:, 0]
-    n_samples, n_features = X.shape  # number of samples and number of features
+    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     # perform evaluation on classification task
     num_fea = 100  # number of selected features

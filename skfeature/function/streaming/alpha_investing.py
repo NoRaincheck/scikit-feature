@@ -74,6 +74,8 @@ class AlphaInvesting(BaseEstimator, TransformerMixin):
         self.F = []  # selected features
 
     def fit(self, X, y=None):
+        if y is None:
+            raise ValueError("alpha-investing requires target values y")
         self.F = alpha_investing(X[:], y[:], self.w0, self.dw)
         return self
 

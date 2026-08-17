@@ -34,9 +34,9 @@ def jmi(X, y, mode="rank", **kwargs):
     """
     if "n_selected_features" in list(kwargs.keys()):
         n_selected_features = kwargs["n_selected_features"]
-        F, J_CMI, MIfy = LCSI.lcsi(X, y, function_name="JMI", n_selected_features=n_selected_features)
+        F, _, _ = LCSI.lcsi(X, y, function_name="JMI", n_selected_features=n_selected_features)
     else:
-        F, J_CMI, MIfy = LCSI.lcsi(X, y, function_name="JMI")
+        F, _J_CMI, _MIfy = LCSI.lcsi(X, y, function_name="JMI")
 
     if mode == "index":
         return np.array(F, dtype=int)

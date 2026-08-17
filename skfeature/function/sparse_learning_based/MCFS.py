@@ -57,11 +57,11 @@ def mcfs(X, y=None, n_selected_features=None, mode="rank", **kwargs):
     W = np.dot(W_norm, np.dot(W, W_norm))
     WT = W.T
     W[W < WT] = WT[W < WT]
-    eigen_value, ul = scipy.linalg.eigh(a=W)
+    _eigen_value, ul = scipy.linalg.eigh(a=W)
     Y = np.dot(W_norm, ul[:, -1 * n_clusters - 1 : -1])
 
     # solve K L1-regularized regression problem using LARs algorithm with cardinality constraint being d
-    n_sample, n_feature = X.shape
+    _n_sample, n_feature = X.shape
     W = np.zeros((n_feature, n_clusters))
     for i in range(n_clusters):
         clf = linear_model.Lars(n_nonzero_coefs=n_selected_features)

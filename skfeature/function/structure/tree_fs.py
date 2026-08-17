@@ -51,7 +51,7 @@ def tree_fs(X, y, z, idx, **kwargs):
     verbose = kwargs.get("verbose", False)
 
     # starting point initialization
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
 
     # compute X'y
     Xty = np.dot(np.transpose(X), y)

@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 from scipy.optimize import linear_sum_assignment as linear_assignment
 from sklearn.cluster import KMeans
@@ -10,7 +12,7 @@ def best_map(l1, l2):
     """
     if len(l1) != len(l2):
         print("L1.shape must == L2.shape")
-        exit(0)
+        sys.exit(0)
 
     label1 = np.unique(l1)
     n_class1 = len(label1)
@@ -21,8 +23,8 @@ def best_map(l1, l2):
     n_class = max(n_class1, n_class2)
     G = np.zeros((n_class, n_class))
 
-    for i in range(0, n_class1):
-        for j in range(0, n_class2):
+    for i in range(n_class1):
+        for j in range(n_class2):
             ss = l1 == label1[i]
             tt = l2 == label2[j]
             G[i, j] = np.count_nonzero(ss & tt)
@@ -31,7 +33,7 @@ def best_map(l1, l2):
     A = np.array(list(zip(*A)))
 
     new_l2 = np.zeros(l2.shape)
-    for i in range(0, n_class2):
+    for i in range(n_class2):
         new_l2[l2 == label2[A[i][1]]] = label1[A[i][0]]
     return new_l2.astype(int)
 

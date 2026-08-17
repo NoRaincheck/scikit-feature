@@ -43,7 +43,7 @@ def trace_ratio(X, y, n_selected_features=None, mode="rank", **kwargs):
         kwargs["style"] = "fisher"
     # get the way to build affinity matrix, 'fisher' or 'laplacian'
     style = kwargs["style"]
-    n_samples, n_features = X.shape
+    n_samples, _n_features = X.shape
 
     # if 'verbose' is not specified, do not output the value of objective function
     if "verbose" not in kwargs:

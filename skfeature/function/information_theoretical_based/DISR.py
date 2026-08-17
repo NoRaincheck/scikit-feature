@@ -35,7 +35,7 @@ def disr(X, y, mode="rank", **kwargs):
     Theoretic Feature Selection." JMLR 2012.
     """
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
     # index of selected features, initialized to be empty
     F = []
     # Objective function value for selected features

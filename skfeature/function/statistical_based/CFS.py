@@ -24,7 +24,7 @@ def merit_calculation(X, y):
         merit of a feature subset X
     """
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
     rff = 0
     rcf = 0
     for i in range(n_features):
@@ -60,7 +60,7 @@ def cfs(X, y, mode="rank"):
     Zhao, Zheng et al. "Advancing Feature Selection Research - ASU Feature Selection Repository" 2010.
     """
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
     F = []
     # M stores the merit values
     M = []

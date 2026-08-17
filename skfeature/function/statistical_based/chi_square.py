@@ -27,9 +27,9 @@ def chi_square(X, y, mode="rank"):
     """
     if mode not in ["rank", "raw", "index"]:
         print('mode is not one of "rank", "raw", "index"')
-        raise ()
+        raise ValueError('mode is not one of "rank", "raw", "index"')
 
-    F, pval = chi2(X, y)
+    F, _pval = chi2(X, y)
 
     if mode == "raw":
         return F

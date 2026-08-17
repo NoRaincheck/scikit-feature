@@ -24,7 +24,7 @@ def svm_forward(X, y, mode="rank", n_selected_features=None):
         index of selected features
     """
 
-    n_samples, n_features = X.shape
+    _n_samples, n_features = X.shape
     if n_selected_features is None:
         n_selected_features = n_features
     # using 10 fold cross validation

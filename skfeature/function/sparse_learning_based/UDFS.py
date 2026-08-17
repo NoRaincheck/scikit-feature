@@ -40,7 +40,7 @@ def udfs(X, y=None, mode="rank", **kwargs):
         """
         This function constructs the M matrix described in the paper
         """
-        n_sample, n_feature = X.shape
+        n_sample, _n_feature = X.shape
         Xt = X.T
         D = pairwise_distances(X)
         # sort the distance matrix D in ascending order
@@ -75,7 +75,7 @@ def udfs(X, y=None, mode="rank", **kwargs):
     verbose = kwargs.get("verbose", False)
 
     # construct M
-    n_sample, n_feature = X.shape
+    _n_sample, n_feature = X.shape
     M = construct_M(X, k, gamma)
 
     D = np.eye(n_feature)
@@ -85,7 +85,7 @@ def udfs(X, y=None, mode="rank", **kwargs):
         # update W as the eigenvectors of P corresponding to the first n_clusters
         # smallest eigenvalues
         P = M + gamma * D
-        eigen_value, eigen_vector = scipy.linalg.eigh(a=P)
+        _eigen_value, eigen_vector = scipy.linalg.eigh(a=P)
         W = eigen_vector[:, 0:n_clusters]
         # update D as D_ii = 1 / 2 / ||W(i,:)||
         D = generate_diagonal_matrix(W)

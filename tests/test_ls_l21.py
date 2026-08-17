@@ -16,7 +16,7 @@ def test_ls_l21():
     X = X.astype(float)
     y = mat["Y"]  # label
     y = y[:, 0]
-    n_samples, n_features = X.shape  # number of samples and number of features
+    _n_samples, _n_features = X.shape  # number of samples and number of features
 
     X = X[:100, :30]
     y = y[:100]

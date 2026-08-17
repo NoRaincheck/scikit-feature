@@ -36,7 +36,7 @@ def main():
     idx = idx.astype(int)
 
     # perform feature selection and obtain the feature weight of all the features
-    w, obj, value_gamma = group_fs.group_fs(X, y, z1, z2, idx, verbose=True)
+    _w, _obj, _value_gamma = group_fs.group_fs(X, y, z1, z2, idx, verbose=True)
 
 
 if __name__ == "__main__":

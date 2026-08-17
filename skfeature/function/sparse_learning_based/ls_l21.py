@@ -58,8 +58,8 @@ def proximal_gradient_descent(X, Y_flat, z, mode="rank", **kwargs):
     # convert Y_flat to one hot encoded
     Y = construct_label_matrix_pan(Y_flat)
     # starting point initialization
-    n_samples, n_features = X.shape
-    n_samples, n_classes = Y.shape
+    _, n_features = X.shape
+    _n_samples, n_classes = Y.shape
 
     # compute X'Y
     XtY = np.dot(np.transpose(X), Y)

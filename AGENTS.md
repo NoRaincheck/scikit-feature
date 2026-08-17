@@ -23,6 +23,7 @@ The single package lives in `skfeature/` with submodules organized by algorithm 
 - `make test` — run pytest on the tests/ directory
 - `make format` — format code with ruff format
 - `make lint` — lint code with ruff check
+- `make typecheck` — type-check code with ty
 - `make serve-docs` — serve documentation locally via docsify (open http://localhost:8080)
 
 ## Change discipline
@@ -39,7 +40,7 @@ code while working on a task — that can wait.
 - Add comments only when intent isn't clear from the code
 - Use `.gitignore` awareness in file-search tools (grep, find)
 
-Ruff is configured with a 120-character line length. It targets Python 3.10+ and enables `E`, `F`, `W`, `I`, `UP`, `B`, `SIM` rulesets (`E203` and `E501` are ignored).
+Ruff is configured with a 120-character line length. 
 
 ## Testing
 
