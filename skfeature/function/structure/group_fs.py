@@ -96,7 +96,7 @@ def group_fs(X, y, z1, z2, idx, **kwargs):
             n_nodes = int(idx.shape[1])
             idx_tmp = np.zeros((3, n_nodes + 1))
             idx_tmp[0:2, :] = np.concatenate((np.array([[-1], [-1]]), idx[0:2, :]), axis=1)
-            idx_tmp[2, :] = np.concatenate((np.array([z1 / gamma]), z2 / gamma * idx[2, :]), axis=1)
+            idx_tmp[2, :] = np.concatenate((np.array([z1 / gamma]), z2 / gamma * idx[2, :]))
             w = tree_lasso_projection(v, n_features, idx_tmp, n_nodes + 1)
             # the difference between the new approximate solution w and the search point s
             v = w - s
@@ -127,7 +127,7 @@ def group_fs(X, y, z1, z2, idx, **kwargs):
         # calculate the regularization part
         idx_tmp = np.zeros((3, n_nodes + 1))
         idx_tmp[0:2, :] = np.concatenate((np.array([[-1], [-1]]), idx[0:2, :]), axis=1)
-        idx_tmp[2, :] = np.concatenate((np.array([z1]), z2 * idx[2, :]), axis=1)
+        idx_tmp[2, :] = np.concatenate((np.array([z1]), z2 * idx[2, :]))
         tree_norm_val = tree_norm(w, n_features, idx_tmp, n_nodes + 1)
 
         # function value = loss + regularization

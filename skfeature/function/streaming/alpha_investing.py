@@ -31,17 +31,11 @@ def alpha_investing(X, y, w0, dw):
     for i in range(n_features):
         x_can = X[:, i]  # generate next feature
         alpha = w / 2 / (i + 1)
-        X_old = X[:, F]
-        if i == 0:
-            X_old = np.ones((n_samples, 1))
-            linreg_old = linear_model.LinearRegression()
-            linreg_old.fit(X_old, y)
-            error_old = 1 - linreg_old.score(X_old, y)
-        if i != 0:
-            # model built with only X_old
-            linreg_old = linear_model.LinearRegression()
-            linreg_old.fit(X_old, y)
-            error_old = 1 - linreg_old.score(X_old, y)
+        # when no features have been selected yet, compare against the intercept-only model
+        X_old = np.ones((n_samples, 1)) if not F else X[:, F]
+        linreg_old = linear_model.LinearRegression()
+        linreg_old.fit(X_old, y)
+        error_old = 1 - linreg_old.score(X_old, y)
 
         # model built with X_old & {x_can}
         X_new = np.concatenate((X_old, x_can.reshape(n_samples, 1)), axis=1)
