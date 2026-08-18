@@ -1,5 +1,4 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/skfeature-chappers.svg)](https://pypi.org/project/skfeature-chappers/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/skfeature-chappers.svg)](https://pypi.org/project/skfeature-chappers/)
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://noRaincheck.github.io/scikit-feature/)
 
 `scikit-feature` is an open-source (GNU General Public License v2.0) feature selection repository in Python developed by Data Mining and Machine Learning Lab at Arizona State University.
