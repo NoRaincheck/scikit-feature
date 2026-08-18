@@ -1,19 +1,23 @@
 # Util
 
-**Module:** `skfeature.utility.util`
+`skfeature.utility.util`
 
 ## Description
 
-Util: General utility functions. This module provides utility functions used by various feature selection algorithms in the library.
+**Util** contains general-purpose helpers shared across the repository, most importantly the rank conversion used to align feature rankings with scikit-learn's `SelectKBest` interface.
 
 ## Usage
 
 ```python
+import numpy as np
+
 from skfeature.utility import util
 
-# Import and use as needed for your specific application
+indices = np.array([3, 1, 2, 0])  # 0 is the most important feature
+rank = util.reverse_argsort(indices, size=4)
 ```
 
-## References
+## Functions
 
-- Part of the scikit-feature library by DMML Lab@ASU.
+- `reverse_argsort(X, size=None)`: convert feature indices (0 = most important) into a rank array aligned with `sklearn.feature_selection.SelectKBest`
+- `loadmat(path_to_mat)`: load a MATLAB `.mat` file into a dictionary of numpy arrays

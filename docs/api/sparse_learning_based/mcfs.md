@@ -1,35 +1,40 @@
 # MCFS
 
-**Module:** `skfeature.function.sparse_learning_based.mcfs`
+`skfeature.function.sparse_learning_based.MCFS`
 
 ## Description
 
-MCFS (Multivariate Cluster Feature Selection). This algorithm uses sparse representation with L21 norm regularization to select features, making it robust to outliers and noise in the data.
+**MCFS** (Multi-Cluster Feature Selection) is an unsupervised method. It first partitions the data into clusters using spectral clustering, then selects features that best represent the cluster assignments via sparse regression.
 
 ## Usage
 
 ```python
-from skfeature.function.sparse_learning_based import mcfs
 import numpy as np
 from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectKBest
+
+from skfeature.function.sparse_learning_based import MCFS
 
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = mcfs.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# rank features via SelectKBest-compatible scoring
+selector = SelectKBest(score_func=MCFS.mcfs, k=5)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array` or `None` — optional labels (unsupervised)
+- `n_selected_features`: `int` — number of features to select
+- `**kwargs`: optional `W` affinity matrix and `n_clusters`
+- `mode`: `{"rank", "index"}`, default `"rank"`
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Cai, Deng, Zhang, Chiyuan, and He, Xiaofei. "Unsupervised feature selection for multi-cluster data." KDD 2010.

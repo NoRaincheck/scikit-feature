@@ -1,34 +1,41 @@
-# Ls_l21
+# ls_l21
 
-**Module:** `skfeature.function.sparse_learning_based.ls_l21`
+`skfeature.function.sparse_learning_based.ls_l21`
 
 ## Description
 
-Ls_l21 (Least Squares with L21 Norm regularization). This algorithm uses sparse representation with L21 norm regularization to select features, making it robust to outliers and noise in the data.
+**ls_l21** (least squares with l2,1-norm) performs supervised sparse feature selection by minimizing a squared-loss objective regularized by the l2,1 norm, `min ||XW - Y||_F^2 + z ||W||_{2,1}`. The l2,1 norm drives rows of the weight matrix to zero, performing joint feature selection across all targets.
 
 ## Usage
 
 ```python
-from skfeature.function.sparse_learning_based import ls_l21
 import numpy as np
-from sklearn.datasets import load_iris
+from functools import partial
 
-X, y = load_iris(return_X_y=True)
+from sklearn.feature_selection import SelectKBest
 
-# Select top k features
-selected_features = ls_l21.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+from skfeature.function.sparse_learning_based import ls_l21
+
+# y is expected as a one-hot encoded label matrix
+X = np.random.rand(200, 100)
+y = np.random.randint(0, 2, 200)
+
+score_func = partial(ls_l21.proximal_gradient_descent, z=0.1)
+selector = SelectKBest(score_func=score_func, k=10)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `Y_flat`: `numpy array` — class labels
+- `z`: `float` — regularization parameter controlling the l2,1-norm penalty
+- `mode`: `{"rank", "index"}`, default `"rank"`
+- `**kwargs`: additional parameters
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature
 
 ## References
 

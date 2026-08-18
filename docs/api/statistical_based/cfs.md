@@ -1,35 +1,40 @@
 # CFS
 
-**Module:** `skfeature.function.statistical_based.cfs`
+`skfeature.function.statistical_based.CFS`
 
 ## Description
 
-CFS (Correlation-based Feature Selection). Statistical methods evaluate the relationship between each feature and the target variable using statistical tests or measures.
+**CFS** (Correlation-based Feature Selection) evaluates feature subsets by a merit function that rewards features highly correlated with the class labels but uncorrelated with each other, using symmetrical uncertainty as the correlation measure.
 
 ## Usage
 
 ```python
-from skfeature.function.statistical_based import cfs
 import numpy as np
 from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectKBest
+
+from skfeature.function.statistical_based import CFS
 
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = cfs.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# rank features and select the top k
+selector = SelectKBest(score_func=CFS.cfs, k=2)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array`, shape `(n_samples,)` — class labels
+- `mode`: `{{"rank", "index"}}`, default `"rank"` — `"rank"` returns an array of feature indices
+  ordered by importance and aligned with `sklearn.feature_selection.SelectKBest`; `"index"` returns the
+  indices of the selected features with the most important one first
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Hall, Mark A. "Correlation-based feature selection for machine learning." PhD thesis 1999.

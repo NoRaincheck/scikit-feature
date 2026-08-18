@@ -1,73 +1,78 @@
 # Algorithms Overview
 
-This page provides an organized reference of all feature selection algorithms in scikit-feature.
+This page provides an organized reference of all feature selection algorithms in
+`scikit-feature`.
 
 ## Information Theoretical Based
 
-| Algorithm | File | Description |
-|-----------|------|-------------|
-| MIM | [mim](information_theoretical_based/mim.md) | Mutual Information Maximization |
-| MIFS | [mifs](information_theoretical_based/mifs.md) | Mutual Information Feature Selection |
-| JMI | [jmi](information_theoretical_based/jmi.md) | Joint Mutual Information |
-| CMIM | [cmim](information_theoretical_based/cmim.md) | Conditional Maximal Importance |
-| CIFE | [cife](information_theoretical_based/cife.md) | Conditional Information Feature Extraction |
-| MRMR | [mrmr](information_theoretical_based/mrmr.md) | Minimum Redundancy Maximum Relevance |
-| FCBF | [fcbf](information_theoretical_based/fcbf.md) | Fast Correlation Filter Bank |
-| DISR | [disr](information_theoretical_based/disr.md) | Discriminative Information Selection for Regression |
-| ICAP | [icap](information_theoretical_based/icap.md) | Interaction Capping |
-| LCSI | [lcsi](information_theoretical_based/lcsi.md) | Local Conditional Score Improvement |
+| Algorithm | Module | Description |
+|-----------|--------|-------------|
+| [MIM](information_theoretical_based/mim.md) | `mim` | Mutual Information Maximization |
+| [MIFS](information_theoretical_based/mifs.md) | `mifs` | Mutual Information Feature Selection |
+| [JMI](information_theoretical_based/jmi.md) | `jmi` | Joint Mutual Information |
+| [CMIM](information_theoretical_based/cmim.md) | `cmim` | Conditional Mutual Information Maximization |
+| [CIFE](information_theoretical_based/cife.md) | `cife` | Conditional Infomax Feature Extraction |
+| [MRMR](information_theoretical_based/mrmr.md) | `mrmr` | Minimum Redundancy Maximum Relevance |
+| [FCBF](information_theoretical_based/fcbf.md) | `fcbf` | Fast Correlation-Based Filter |
+| [DISR](information_theoretical_based/disr.md) | `disr` | Double Input Symmetrical Relevance |
+| [ICAP](information_theoretical_based/icap.md) | `icap` | Interaction Capping |
+| [LCSI](information_theoretical_based/lcsi.md) | `lcsi` | Local Conditional Score Improvement |
 
 ## Similarity Based
 
-| Algorithm | File | Description |
-|-----------|------|-------------|
-| Fisher Score | [fisher_score](similarity_based/fisher_score.md) | Fisher Score for feature ranking |
-| LapScore | [lap_score](similarity_based/lap_score.md) | Laplacian Score |
-| ReliefF | [relieff](similarity_based/relieff.md) | Relief-F algorithm |
-| SPEC | [spec](similarity_based/spec.md) | Spectral Feature Selection |
-| Trace Ratio | [trace_ratio](similarity_based/trace_ratio.md) | Trace Ratio Criterion |
+| Algorithm | Module | Description |
+|-----------|--------|-------------|
+| [Fisher Score](similarity_based/fisher_score.md) | `fisher_score` | Fisher score for feature ranking |
+| [LapScore](similarity_based/lap_score.md) | `lap_score` | Laplacian score |
+| [ReliefF](similarity_based/relieff.md) | `reliefF` | Relief-F algorithm |
+| [SPEC](similarity_based/spec.md) | `SPEC` | Spectral feature selection |
+| [Trace Ratio](similarity_based/trace_ratio.md) | `trace_ratio` | Trace ratio criterion |
 
 ## Sparse Learning Based
 
-| Algorithm | File | Description |
-|-----------|------|-------------|
-| RFS | [rfs](sparse_learning_based/rfs.md) | Robust Feature Selection |
-| MCFS | [mcfs](sparse_learning_based/mcfs.md) | Multivariate Cluster Feature Selection |
-| NDFS | [ndfs](sparse_learning_based/ndfs.md) | Non-negative Dual View Clustering |
-| UDFS | [udfs](sparse_learning_based/udfs.md) | Unsupervised Discriminative Feature Selection |
-| Ll_l21 | [ll_l21](sparse_learning_based/ll_l21.md) | L1,2 Norm Regularization |
-| Ls_l21 | [ls_l21](sparse_learning_based/ls_l21.md) | Least Squares with L21 Norm |
+| Algorithm | Module | Description |
+|-----------|--------|-------------|
+| [RFS](sparse_learning_based/rfs.md) | `RFS` | Robust feature selection via joint l2,1-norms |
+| [MCFS](sparse_learning_based/mcfs.md) | `MCFS` | Multi-cluster feature selection |
+| [NDFS](sparse_learning_based/ndfs.md) | `NDFS` | Nonnegative spectral feature selection |
+| [UDFS](sparse_learning_based/udfs.md) | `UDFS` | l2,1-norm regularized unsupervised feature selection |
+| [ll_l21](sparse_learning_based/ll_l21.md) | `ll_l21` | Logistic loss with l2,1-norm regularization |
+| [ls_l21](sparse_learning_based/ls_l21.md) | `ls_l21` | Least squares with l2,1-norm regularization |
 
 ## Statistical Based
 
-| Algorithm | File | Description |
-|-----------|------|-------------|
-| t-Score | [t_score](statistical_based/t_score.md) | Student's t-test Score |
-| F-Score | [f_score](statistical_based/f_score.md) | ANOVA F-test Score |
-| Chi-Square | [chi_square](statistical_based/chi_square.md) | Chi-Square Test |
-| Gini Index | [gini_index](statistical_based/gini_index.md) | Gini Index |
-| Low Variance | [low_variance](statistical_based/low_variance.md) | Low Variance Threshold |
-| CFS | [cfs](statistical_based/cfs.md) | Correlation-based Feature Selection |
+| Algorithm | Module | Description |
+|-----------|--------|-------------|
+| [t-Score](statistical_based/t_score.md) | `t_score` | Student's t-test score |
+| [F-Score](statistical_based/f_score.md) | `f_score` | ANOVA F-test score |
+| [Chi-Square](statistical_based/chi_square.md) | `chi_square` | Chi-square test |
+| [Gini Index](statistical_based/gini_index.md) | `gini_index` | Gini index |
+| [Low Variance](statistical_based/low_variance.md) | `low_variance` | Low variance threshold |
+| [CFS](statistical_based/cfs.md) | `CFS` | Correlation-based feature selection |
 
 ## Structure Based
 
-| Algorithm | File | Description |
-|-----------|------|-------------|
-| Graph FS | [graph_fs](structure/graph_fs.md) | Graph-based Feature Selection |
-| Group FS | [group_fs](structure/group_fs.md) | Group-based Feature Selection |
-| Tree FS | [tree_fs](structure/tree_fs.md) | Tree-based Feature Selection |
+| Algorithm | Module | Description |
+|-----------|--------|-------------|
+| [Graph FS](structure/graph_fs.md) | `graph_fs` | Graph-based feature selection |
+| [Group FS](structure/group_fs.md) | `group_fs` | Group-based feature selection |
+| [Tree FS](structure/tree_fs.md) | `tree_fs` | Tree-structured feature selection |
 
 ## Wrapper Based
 
-| Algorithm | File | Description |
-|-----------|------|-------------|
-| SVM Forward | [svm_forward](wrapper/svm_forward.md) | SVM-based Forward Selection |
-| SVM Backward | [svm_backward](wrapper/svm_backward.md) | SVM-based Backward Elimination |
-| Decision Tree Forward | [decision_tree_forward](wrapper/decision_tree_forward.md) | DT-based Forward Selection |
-| Decision Tree Backward | [decision_tree_backward](wrapper/decision_tree_backward.md) | DT-based Backward Elimination |
+| Algorithm | Module | Description |
+|-----------|--------|-------------|
+| [SVM Forward](wrapper/svm_forward.md) | `svm_forward` | SVM-based forward selection |
+| [SVM Backward](wrapper/svm_backward.md) | `svm_backward` | SVM-based backward elimination |
+| [Decision Tree Forward](wrapper/decision_tree_forward.md) | `decision_tree_forward` | Decision-tree-based forward selection |
+| [Decision Tree Backward](wrapper/decision_tree_backward.md) | `decision_tree_backward` | Decision-tree-based backward elimination |
 
 ## Streaming Based
 
-| Algorithm | File | Description |
-|-----------|------|-------------|
-| Alpha Investing | [alpha_investing](streaming/alpha_investing.md) | Alpha Investing Rule for Online Feature Selection |
+| Algorithm | Module | Description |
+|-----------|--------|-------------|
+| [Alpha Investing](streaming/alpha_investing.md) | `alpha_investing` | Streamwise (online) feature selection |
+
+## See also
+
+-   [Utilities overview](../api/utilities-overview.md) — shared helpers used by the algorithms above

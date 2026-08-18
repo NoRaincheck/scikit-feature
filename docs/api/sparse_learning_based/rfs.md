@@ -1,35 +1,38 @@
 # RFS
 
-**Module:** `skfeature.function.sparse_learning_based.rfs`
+`skfeature.function.sparse_learning_based.RFS`
 
 ## Description
 
-RFS (Robust Feature Selection). This algorithm uses sparse representation with L21 norm regularization to select features, making it robust to outliers and noise in the data.
+**RFS** (Robust Feature Selection) jointly minimizes the l2,1-norm of both the regression error and the feature weight matrix, `min ||X' W - Y||_{2,1} + gamma ||W||_{2,1}`, making it robust to outliers and noise while selecting a shared subset of features.
 
 ## Usage
 
 ```python
-from skfeature.function.sparse_learning_based import rfs
 import numpy as np
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_breast_cancer
+from sklearn.feature_selection import SelectKBest
 
-X, y = load_iris(return_X_y=True)
+from skfeature.function.sparse_learning_based import RFS
 
-# Select top k features
-selected_features = rfs.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+X, y = load_breast_cancer(return_X_y=True)
+
+selector = SelectKBest(score_func=RFS.rfs, k=10)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `Y_flat`: `numpy array`, shape `(n_samples,)` — class labels
+- `**kwargs`: optional `gamma` regularization parameter
+- `mode`: `{"rank", "index"}`, default `"rank"`
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Nie, Feiping et al. "Efficient and robust feature selection via joint l2,1-norms minimization." NIPS 2010.

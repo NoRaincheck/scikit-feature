@@ -1,19 +1,23 @@
 # Data Discretization
 
-**Module:** `skfeature.utility.data_discretization`
+`skfeature.utility.data_discretization`
 
 ## Description
 
-Data Discretization: Discretize continuous features into categorical bins. This module provides utility functions used by various feature selection algorithms in the library.
+**Data Discretization** converts continuous features into discrete bins. This is required as a preprocessing step before running the information-theoretic feature selection algorithms, which expect discrete inputs.
 
 ## Usage
 
 ```python
+import numpy as np
+from sklearn.datasets import load_iris
+
 from skfeature.utility import data_discretization
 
-# Import and use as needed for your specific application
+X, y = load_iris(return_X_y=True)
+X_discrete = data_discretization.data_discretization(X, n_bins=5)
 ```
 
-## References
+## Functions
 
-- Part of the scikit-feature library by DMML Lab@ASU.
+- `data_discretization(X, n_bins)`: discretize each feature into `n_bins` equal-width bins and return the discretized matrix.

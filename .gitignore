@@ -50,7 +50,8 @@ coverage.xml
 # Django stuff:
 *.log
 
-# Docsify (served statically, no build step needed)
+# MkDocs
+site/
 
 # PyBuilder
 target/

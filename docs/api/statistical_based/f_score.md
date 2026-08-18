@@ -1,35 +1,40 @@
 # F-Score
 
-**Module:** `skfeature.function.statistical_based.f_score`
+`skfeature.function.statistical_based.f_score`
 
 ## Description
 
-F-Score (ANOVA F-test Score for feature ranking). Statistical methods evaluate the relationship between each feature and the target variable using statistical tests or measures.
+**F-Score** ranks features using the ANOVA F-value between each feature and the class labels, which measures how much of the feature variance is explained by class differences.
 
 ## Usage
 
 ```python
-from skfeature.function.statistical_based import f_score
 import numpy as np
 from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectKBest
+
+from skfeature.function.statistical_based import f_score
 
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = f_score.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# rank features and select the top k
+selector = SelectKBest(score_func=f_score.f_score, k=2)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array`, shape `(n_samples,)` — class labels
+- `mode`: `{{"rank", "index"}}`, default `"rank"` — `"rank"` returns an array of feature indices
+  ordered by importance and aligned with `sklearn.feature_selection.SelectKBest`; `"index"` returns the
+  indices of the selected features with the most important one first
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Based on `sklearn.feature_selection.f_classif`.

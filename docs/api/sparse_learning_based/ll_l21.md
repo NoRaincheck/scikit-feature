@@ -1,34 +1,43 @@
-# Ll_l21
+# ll_l21
 
-**Module:** `skfeature.function.sparse_learning_based.ll_l21`
+`skfeature.function.sparse_learning_based.ll_l21`
 
 ## Description
 
-Ll_l21 (L1,2 Norm Regularization for feature selection). This algorithm uses sparse representation with L21 norm regularization to select features, making it robust to outliers and noise in the data.
+**ll_l21** (logistic loss with l2,1-norm) performs supervised sparse feature selection by minimizing a logistic loss regularized by the l2,1 norm, `min sum_i log(1 + exp(-y_i (w' x_i + c))) + z ||W||_{2,1}`. The l2,1 norm encourages row sparsity so that irrelevant features receive zero weight.
 
 ## Usage
 
 ```python
-from skfeature.function.sparse_learning_based import ll_l21
 import numpy as np
-from sklearn.datasets import load_iris
+from functools import partial
 
-X, y = load_iris(return_X_y=True)
+from sklearn.feature_selection import SelectKBest
 
-# Select top k features
-selected_features = ll_l21.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+from skfeature.function.sparse_learning_based import ll_l21
+from skfeature.utility.util import loadmat
+
+# binary labels are expected as a one-hot encoded matrix
+mat = loadmat("./data/COIL20.mat")
+X = mat["X"].astype(float)
+y = mat["Y"][:, 0]
+
+score_func = partial(ll_l21.proximal_gradient_descent, z=0.1)
+selector = SelectKBest(score_func=score_func, k=100)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `Y_flat`: `numpy array` — class labels
+- `z`: `float` — regularization parameter controlling the l2,1-norm penalty
+- `mode`: `{"rank", "index"}`, default `"rank"`
+- `**kwargs`: additional parameters
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature
 
 ## References
 

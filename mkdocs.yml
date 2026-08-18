@@ -1,0 +1,131 @@
+site_name: scikit-feature
+site_description: Feature selection repository in Python (DMML Lab@ASU)
+site_url: https://noRaincheck.github.io/scikit-feature/
+repo_url: https://github.com/NoRaincheck/scikit-feature
+repo_name: NoRaincheck/scikit-feature
+edit_uri: edit/master/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.integrate
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Overview: guide/getting-started.md
+      - Installation: guide/installation.md
+      - Quick Start: guide/quick-start.md
+  - Algorithms:
+      - Overview: api/algorithms-overview.md
+      - Information Theoretical:
+          - MIM: api/information_theoretical_based/mim.md
+          - MIFS: api/information_theoretical_based/mifs.md
+          - JMI: api/information_theoretical_based/jmi.md
+          - CMIM: api/information_theoretical_based/cmim.md
+          - CIFE: api/information_theoretical_based/cife.md
+          - MRMR: api/information_theoretical_based/mrmr.md
+          - FCBF: api/information_theoretical_based/fcbf.md
+          - DISR: api/information_theoretical_based/disr.md
+          - ICAP: api/information_theoretical_based/icap.md
+          - LCSI: api/information_theoretical_based/lcsi.md
+      - Similarity Based:
+          - Fisher Score: api/similarity_based/fisher_score.md
+          - LapScore: api/similarity_based/lap_score.md
+          - ReliefF: api/similarity_based/relieff.md
+          - SPEC: api/similarity_based/spec.md
+          - Trace Ratio: api/similarity_based/trace_ratio.md
+      - Sparse Learning Based:
+          - RFS: api/sparse_learning_based/rfs.md
+          - MCFS: api/sparse_learning_based/mcfs.md
+          - NDFS: api/sparse_learning_based/ndfs.md
+          - UDFS: api/sparse_learning_based/udfs.md
+          - ll_l21: api/sparse_learning_based/ll_l21.md
+          - ls_l21: api/sparse_learning_based/ls_l21.md
+      - Statistical Based:
+          - t-Score: api/statistical_based/t_score.md
+          - F-Score: api/statistical_based/f_score.md
+          - Chi-Square: api/statistical_based/chi_square.md
+          - Gini Index: api/statistical_based/gini_index.md
+          - Low Variance: api/statistical_based/low_variance.md
+          - CFS: api/statistical_based/cfs.md
+      - Structure Based:
+          - Graph FS: api/structure/graph_fs.md
+          - Group FS: api/structure/group_fs.md
+          - Tree FS: api/structure/tree_fs.md
+      - Wrapper Based:
+          - SVM Forward: api/wrapper/svm_forward.md
+          - SVM Backward: api/wrapper/svm_backward.md
+          - Decision Tree Forward: api/wrapper/decision_tree_forward.md
+          - Decision Tree Backward: api/wrapper/decision_tree_backward.md
+      - Streaming:
+          - Alpha Investing: api/streaming/alpha_investing.md
+  - Utilities:
+      - Overview: api/utilities-overview.md
+      - Construct W: api/utility/construct_w.md
+      - Data Discretization: api/utility/data_discretization.md
+      - Entropy Estimators: api/utility/entropy_estimators.md
+      - Mutual Information: api/utility/mutual_information.md
+      - Sparse Learning Utils: api/utility/sparse_learning.md
+      - Unsupervised Evaluation: api/utility/unsupervised_evaluation.md
+      - Util: api/utility/util.md
+  - Contributing: contributing.md
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/NoRaincheck/scikit-feature
+
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.critic
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+
+copyright: Copyright &copy; 2016 - 2026 scikit-feature contributors

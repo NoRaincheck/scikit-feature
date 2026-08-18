@@ -1,34 +1,36 @@
 # Graph FS
 
-**Module:** `skfeature.function.structure.graph_fs`
+`skfeature.function.structure.graph_fs`
 
 ## Description
 
-Graph FS (Graph-based Feature Selection). These algorithms leverage the structure of the data (graphs, groups, or trees) to guide feature selection. They are particularly useful when features have inherent relationships or hierarchical structures.
+**Graph FS** (Graph-based Feature Selection) performs supervised feature selection by solving a sparse objective regularized over a graph that encodes relationships between features. The graph structure guides which features are kept.
 
 ## Usage
 
 ```python
-from skfeature.function.structure import graph_fs
 import numpy as np
 from sklearn.datasets import load_iris
 
+from skfeature.function.structure import graph_fs
+
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = graph_fs.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# run graph-based feature selection (see the module docstring for parameters)
+w, obj, value_gamma = graph_fs.graph_fs(X, y, lambda1=0.1, lambda2=0.1, T=5)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array`, shape `(n_samples,)` — class labels
+- `**kwargs`: `lambda1`, `lambda2` regularization weights and `T` optimization iterations
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `w`: `numpy array`, shape `(n_features,)` — learned feature weights
+- `obj`: objective values across iterations
+- `value_gamma`: gamma values across iterations
 
 ## References
 

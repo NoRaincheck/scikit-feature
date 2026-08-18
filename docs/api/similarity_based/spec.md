@@ -1,34 +1,41 @@
 # SPEC
 
-**Module:** `skfeature.function.similarity_based.spec`
+`skfeature.function.similarity_based.SPEC`
 
 ## Description
 
-SPEC (Spectral Feature Selection using graph-based approach). This algorithm evaluates features based on similarity measures between samples, making it particularly effective for high-dimensional data with small sample sizes.
+**SPEC** (Spectral Feature Selection) is a spectral method that can be used in both supervised and unsupervised settings. It scores features by their consistency with the eigenvectors of a similarity (affinity) matrix of the samples.
 
 ## Usage
 
 ```python
-from skfeature.function.similarity_based import spec
 import numpy as np
 from sklearn.datasets import load_iris
 
+from skfeature.function.similarity_based import SPEC
+
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = spec.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# get a score for every feature (aligned with SelectKBest)
+score = SPEC.spec(X, y)
+
+# or get the indices of the selected features
+selected = SPEC.spec(X, y, mode="index")
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array`, shape `(n_samples,)` or `None` — optional class labels
+- `**kwargs`: additional parameters (e.g. `n_neighbors` for the similarity graph)
+- `mode`: `{{"rank", "index"}}`, default `"rank"` — `"rank"` returns an array of feature indices
+  ordered by importance and aligned with `sklearn.feature_selection.SelectKBest`; `"index"` returns the
+  indices of the selected features with the most important one first
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 

@@ -1,34 +1,39 @@
 # Gini Index
 
-**Module:** `skfeature.function.statistical_based.gini_index`
+`skfeature.function.statistical_based.gini_index`
 
 ## Description
 
-Gini Index (Gini Index for evaluating feature importance). Statistical methods evaluate the relationship between each feature and the target variable using statistical tests or measures.
+**Gini Index** evaluates features using the Gini impurity measure. Lower Gini values indicate features that separate the classes more cleanly, so features are ranked by impurity.
 
 ## Usage
 
 ```python
-from skfeature.function.statistical_based import gini_index
 import numpy as np
 from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectKBest
+
+from skfeature.function.statistical_based import gini_index
 
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = gini_index.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# rank features and select the top k
+selector = SelectKBest(score_func=gini_index.gini_index, k=2)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array`, shape `(n_samples,)` — class labels
+- `mode`: `{{"rank", "index"}}`, default `"rank"` — `"rank"` returns an array of feature indices
+  ordered by importance and aligned with `sklearn.feature_selection.SelectKBest`; `"index"` returns the
+  indices of the selected features with the most important one first
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 

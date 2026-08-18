@@ -1,34 +1,36 @@
 # Decision Tree Forward
 
-**Module:** `skfeature.function.wrapper.decision_tree_forward`
+`skfeature.function.wrapper.decision_tree_forward`
 
 ## Description
 
-Decision Tree Forward (DT-based Forward Selection). Wrapper methods use a predetermined classifier to evaluate subsets of features. They generally provide better performance than filter methods but at higher computational cost.
+**Decision Tree Forward** is a wrapper method that greedily adds features to a subset based on the cross-validated accuracy of a Decision Tree classifier trained on the current subset.
 
 ## Usage
 
 ```python
-from skfeature.function.wrapper import decision_tree_forward
 import numpy as np
 from sklearn.datasets import load_iris
 
+from skfeature.function.wrapper import decision_tree_forward
+
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = decision_tree_forward.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# rank features by cross-validated classifier performance
+score = decision_tree_forward.decision_tree_forward(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array`, shape `(n_samples,)` — class labels
+- `n_selected_features`: `int` — number of features to select
+- `mode`: `{"rank", "index"}`, default `"rank"`
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 

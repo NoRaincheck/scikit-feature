@@ -1,19 +1,23 @@
 # Construct W
 
-**Module:** `skfeature.utility.construct_w`
+`skfeature.utility.construct_W`
 
 ## Description
 
-Construct W: Construct weight matrix for similarity-based methods. This module provides utility functions used by various feature selection algorithms in the library.
+**Construct W** builds the affinity (similarity) matrix used by similarity-based and spectral feature selection methods. It supports several graph construction strategies, including k-nearest-neighbor and heat-kernel weighting.
 
 ## Usage
 
 ```python
-from skfeature.utility import construct_w
+import numpy as np
+from sklearn.datasets import load_iris
 
-# Import and use as needed for your specific application
+from skfeature.utility import construct_W
+
+X, y = load_iris(return_X_y=True)
+W = construct_W.construct_W(X)
 ```
 
-## References
+## Functions
 
-- Part of the scikit-feature library by DMML Lab@ASU.
+- `construct_W(X, **kwargs)`: build the affinity matrix `W` of shape `(n_samples, n_samples)` from the input data. Supported strategies include `knn` (k-nearest-neighbor) and `heat` (heat kernel).

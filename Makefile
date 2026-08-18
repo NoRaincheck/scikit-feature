@@ -1,4 +1,4 @@
-.PHONY: install test format lint typecheck help serve-docs
+.PHONY: install test format lint typecheck help serve-docs build-docs
 
 help:
 	@echo "Available commands:"
@@ -7,7 +7,8 @@ help:
 	@echo "  make format     - Format code with ruff format"
 	@echo "  make lint       - Lint code with ruff check"
 	@echo "  make typecheck  - Type-check code with ty"
-	@echo "  make serve-docs - Serve documentation locally via docsify"
+	@echo "  make serve-docs - Serve documentation locally via mkdocs (http://localhost:8000)"
+	@echo "  make build-docs - Build the documentation site into site/"
 
 install:
 	uv sync --group dev
@@ -26,4 +27,7 @@ typecheck:
 	uv run ty check skfeature/ tests/
 
 serve-docs:
-	python3 -m http.server 8080 --directory .
+	uv run --group docs mkdocs serve
+
+build-docs:
+	uv run --group docs mkdocs build

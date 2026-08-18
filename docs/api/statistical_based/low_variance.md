@@ -1,35 +1,35 @@
 # Low Variance
 
-**Module:** `skfeature.function.statistical_based.low_variance`
+`skfeature.function.statistical_based.low_variance`
 
 ## Description
 
-Low Variance (Low Variance Threshold filter method). Statistical methods evaluate the relationship between each feature and the target variable using statistical tests or measures.
+**Low Variance** removes features whose variance falls below a threshold. It is a simple unsupervised filter useful for dropping constant or near-constant features before applying other methods.
 
 ## Usage
 
 ```python
-from skfeature.function.statistical_based import low_variance
 import numpy as np
 from sklearn.datasets import load_iris
 
+from skfeature.function.statistical_based import low_variance
+
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = low_variance.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# drop features with variance below the threshold
+X_selected = low_variance.low_variance_feature_selection(X, threshold=0.5)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `threshold`: `float`, default `0.0` — minimum variance a feature must have to be kept
+- `mode`: `{"rank", "index"}`, default `"rank"`
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `X_selected`: transformed data with low-variance features removed
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Based on `sklearn.feature_selection.VarianceThreshold`.

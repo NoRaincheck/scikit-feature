@@ -1,35 +1,53 @@
 # CMIM
 
-**Module:** `skfeature.function.information_theoretical_based.cmim`
+`skfeature.function.information_theoretical_based.cmim`
 
 ## Description
 
-CMIM (Conditional Maximal Importance) is an information-theoretic feature selection algorithm. It evaluates the relevance of features based on mutual information with the class labels, and optionally considers redundancy between selected features.
+**CMIM** (Conditional Mutual Information Maximization) scores features as `J(f) = I(f; y) - max_j(I(fj; f) - I(fj; f|y))`, capping the redundancy penalty via the most similar selected feature.
+
+!!! note
+    This information-theoretic method requires **discrete** input features. Discretize continuous data first, for example with `sklearn.preprocessing.KBinsDiscretizer`.
+
 
 ## Usage
 
 ```python
-from skfeature.function.information_theoretical_based import cmim
 import numpy as np
 from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectKBest
+from sklearn.preprocessing import KBinsDiscretizer
+
+from skfeature.function.information_theoretical_based import cmim
 
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = cmim.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# information-theoretic scores require discrete features
+X = KBinsDiscretizer(n_bins=5, encode="ordinal").fit_transform(X).astype(float)
+
+# integrate with scikit-learn pipelines via SelectKBest
+selector = SelectKBest(score_func=cmim.cmim, k=5)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `mode`: `{{"rank", "index"}}`, default `"rank"` — `"rank"` returns an array of feature indices
+  ordered by importance and aligned with `sklearn.feature_selection.SelectKBest`; `"index"` returns the
+  indices of the selected features with the most important one first
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data, must be discrete
+- `y`: `numpy array`, shape `(n_samples,)` — class labels
+- `**kwargs`: additional parameters (see `n_selected_features` below)
+
+Optional keyword arguments:
+
+- `n_selected_features`: `int` — number of features to select
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Fleuret, François. "Fast binary feature selection with conditional mutual information." JMLR 2004.

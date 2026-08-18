@@ -1,35 +1,39 @@
 # UDFS
 
-**Module:** `skfeature.function.sparse_learning_based.udfs`
+`skfeature.function.sparse_learning_based.UDFS`
 
 ## Description
 
-UDFS (Unsupervised Discriminative Feature Selection). This algorithm uses sparse representation with L21 norm regularization to select features, making it robust to outliers and noise in the data.
+**UDFS** (Unsupervised Discriminative Feature Selection) is an unsupervised method that solves `min Tr(W' M W) + gamma ||W||_{2,1}` subject to `W'W = I`, where `M` encodes local discriminative information from the samples.
 
 ## Usage
 
 ```python
-from skfeature.function.sparse_learning_based import udfs
 import numpy as np
 from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectKBest
+
+from skfeature.function.sparse_learning_based import UDFS
 
 X, y = load_iris(return_X_y=True)
 
-# Select top k features
-selected_features = udfs.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+# rank features via SelectKBest-compatible scoring
+selector = SelectKBest(score_func=UDFS.udfs, k=5)
+X_selected = selector.fit_transform(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array` or `None` — optional labels (unsupervised)
+- `**kwargs`: optional `gamma` regularization parameter
+- `mode`: `{"rank", "index"}`, default `"rank"`
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Yang, Yi et al. "l2,1-norm regularized discriminative feature selection for unsupervised learning." IJCAI 2011.

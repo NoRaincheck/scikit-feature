@@ -1,34 +1,41 @@
 # LapScore
 
-**Module:** `skfeature.function.similarity_based.lap_score`
+`skfeature.function.similarity_based.lap_score`
 
 ## Description
 
-LapScore (Laplacian Score for unsupervised feature selection). This algorithm evaluates features based on similarity measures between samples, making it particularly effective for high-dimensional data with small sample sizes.
+**Laplacian Score** is an unsupervised method. It builds an affinity graph over the samples and scores each feature by how well it preserves the local manifold structure of the data; lower scores indicate better features.
 
 ## Usage
 
 ```python
-from skfeature.function.similarity_based import lap_score
 import numpy as np
 from sklearn.datasets import load_iris
 
-X, y = load_iris(return_X_y=True)
+from skfeature.function.similarity_based import lap_score
 
-# Select top k features
-selected_features = lap_score.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+X, y = load_iris(return_X_y=True)  # labels are optional for this unsupervised method
+
+# get a score for every feature (aligned with SelectKBest)
+score = lap_score.lap_score(X, y)
+
+# or get the indices of the selected features
+selected = lap_score.lap_score(X, y, mode="index")
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data
+- `y`: `numpy array`, shape `(n_samples,)` or `None` — optional class labels (unsupervised)
+- `**kwargs`: optional `W` sparse affinity matrix, shape `(n_samples, n_samples)`
+- `mode`: `{{"rank", "index"}}`, default `"rank"` — `"rank"` returns an array of feature indices
+  ordered by importance and aligned with `sklearn.feature_selection.SelectKBest`; `"index"` returns the
+  indices of the selected features with the most important one first
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- `score`: `numpy array`, shape `(n_features,)` — ranking score of every feature, aligned with
+  `sklearn.feature_selection.SelectKBest`
 
 ## References
 

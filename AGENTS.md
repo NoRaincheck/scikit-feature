@@ -24,7 +24,7 @@ The single package lives in `skfeature/` with submodules organized by algorithm 
 - `make format` — format code with ruff format
 - `make lint` — lint code with ruff check
 - `make typecheck` — type-check code with ty
-- `make serve-docs` — serve documentation locally via docsify (open http://localhost:8080)
+- `make serve-docs` — serve documentation locally via mkdocs (open http://localhost:8000)
 
 ## Change discipline
 
@@ -54,9 +54,9 @@ uv run pytest      # same, with coverage flags if configured
 
 ## Documentation
 
-Documentation lives in `docs/` and is served locally by docsify. The main entry
-point is `index.html`. Never embed file-tree listings in README.md files —
-describe layout at a high level instead.
+Documentation lives in `docs/` and is built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+Site configuration and navigation are defined in `mkdocs.yml` at the workspace root. Never
+embed file-tree listings in README.md files — describe layout at a high level instead.
 
 ## Dependencies
 

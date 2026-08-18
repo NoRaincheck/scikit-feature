@@ -1,35 +1,44 @@
 # Alpha Investing
 
-**Module:** `skfeature.function.streaming.alpha_investing`
+`skfeature.function.streaming.alpha_investing`
 
 ## Description
 
-Alpha Investing. This algorithm performs online/sequential feature selection using the alpha investing rule, allowing features to be selected or rejected as data arrives in a streaming fashion.
+**Alpha Investing** is a streamwise (online) feature selection method. Features arrive one at a time and are accepted or rejected on the fly using the alpha-investing rule with a wealth parameter, suitable for binary and univariate regression problems.
 
 ## Usage
 
 ```python
-from skfeature.function.streaming import alpha_investing
 import numpy as np
-from sklearn.datasets import load_iris
+from sklearn.datasets import make_classification
+from sklearn.pipeline import Pipeline
+from sklearn.svm import SVC
 
-X, y = load_iris(return_X_y=True)
+from skfeature.function.streaming import alpha_investing
 
-# Select top k features
-selected_features = alpha_investing.select_feature(X, y, k=5)
-print(f"Selected feature indices: {selected_features}")
+X, y = make_classification(n_samples=200, n_features=20, n_informative=5)
+y = y.astype(float)
+
+pipeline = Pipeline(
+    [
+        ("alphainvesting", alpha_investing.AlphaInvesting(w0=0.05, dw=0.05)),
+        ("svm", SVC()),
+    ]
+)
+pipeline.fit(X, y)
 ```
 
 ## Parameters
 
-- `X`: Feature matrix of shape (n_samples, n_features)
-- `y`: Class labels of shape (n_samples,) or (n_samples, 1)
-- `k`: Number of features to select
+- `X`: `numpy array`, shape `(n_samples, n_features)` — input data, one feature per time step
+- `y`: `numpy array`, shape `(n_samples,)` — class labels or regression target
+- `w0`: `float` — initial wealth
+- `dw`: `float` — wealth increment
 
 ## Returns
 
-- `selected_features`: Array of selected feature indices
+- The module also exposes the `AlphaInvesting` class, a `sklearn.base.TransformerMixin` for use inside scikit-learn pipelines.
 
 ## References
 
-- Original implementation from the DMML Lab@ASU Feature Selection Repository.
+- Zhou, Jing, Foster, Dean P., Stine, Robert A., and Ungar, Lyle H. "Streamwise feature selection." JMLR 2006.
