@@ -8,23 +8,46 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: pypi-publish
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      already-published: ${{ steps.guard.outputs.already-published }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
 
-      - run: uv build
+      - name: Guard - skip if this version is already on PyPI
+        id: guard
+        run: |
+          VERSION=$(sed -n 's/^version = "\(.*\)"$/\1/p' pyproject.toml)
+          echo "Publishing version: $VERSION"
+          if curl -fsSL -o /dev/null "https://pypi.org/pypi/skfeature-chapper/${VERSION}/json"; then
+            echo "v${VERSION} is already on PyPI - nothing to publish"
+            echo "already-published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "v${VERSION} not on PyPI yet - proceeding"
+            echo "already-published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build distributions
+        if: steps.guard.outputs.already-published == 'false'
+        run: uv build
 
       - uses: actions/upload-artifact@v4
+        if: steps.guard.outputs.already-published == 'false'
         with:
           name: dist
           path: dist/
 
   publish:
     needs: build
+    if: needs.build.outputs.already-published == 'false'
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
